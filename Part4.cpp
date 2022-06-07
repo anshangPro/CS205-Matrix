@@ -11,7 +11,7 @@ template <class T>
 void QRBreakDown(T* A, size_t n, T* Q_temp, T* R_temp) {
     long long size = sizeof(T);
     for (int k = 0; k < n; k++) {
-        double norm = 0;
+        T norm = 0;
         for (int i = 0; i < n; i++) {
             norm += A[i * n + k] * A[i * n + k];
         }
@@ -21,7 +21,7 @@ void QRBreakDown(T* A, size_t n, T* Q_temp, T* R_temp) {
             Q_temp[i * n + k] = A[i * n + k] / norm;
         }
         for (int j = k + 1; j < n; j++) {
-            double sum = 0;
+            T sum = 0;
             for (int i = 0; i < n; i++) {
                 sum += Q_temp[i * n + k] * A[i * n + j];
             }
