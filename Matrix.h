@@ -9,6 +9,7 @@
 #include <cstring>
 #include <iostream>
 #include "IndexOutOfBound.h"
+#include "SizeNotEqual.h"
 
 template<class T>
 class Matrix {
@@ -17,6 +18,7 @@ private:
     size_t size;
     size_t m_col, m_row;
     bool isValid(size_t col, size_t row) const;
+    bool isValid(size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) const;
 public:
     Matrix() : data(nullptr), size(0), m_col(0), m_row(0) {}
 
