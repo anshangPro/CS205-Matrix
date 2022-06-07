@@ -33,6 +33,32 @@ void QRBreakDown(T* A, size_t n, T* Q_temp, T* R_temp) {
     }
 }
 
+template<class T>
+long long determinant(T *matrix, int n) {
+    long long det = 0;
+    auto submatrix = new T[(n - 1) * (n - 1)];
+    if (n == 2)
+        return ((matrix[0] * matrix[3]) - (matrix[2] * matrix[1]));
+    else {
+        for (int x = 0; x < n; x++) {
+            int subi = 0;
+            for (int i = 1; i < n; i++) {
+                int subj = 0;
+                for (int j = 0; j < n; j++) {
+                    if (j == x) {
+                        continue;
+                    }
+                    submatrix[subi * (n-1) + subj] = matrix[i * n + j];
+                    subj++;
+                }
+                subi++;
+            }
+            det = det + (pow(-1, x) * matrix[x] * determinant(submatrix, n - 1));
+        }
+    }
+    return det;
+}
+
 
 /**
  * @brief 求实对称矩阵的特征值及特征向量的雅克比法
