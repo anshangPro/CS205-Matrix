@@ -43,9 +43,15 @@ private:
   Matrix<T> slicing(size_t col_begin, size_t col_end, size_t row_begin,
                     size_t row_end);
 
-  Matrix<T> vigenvalue();
+  Matrix<T> vigenValue();
 
-  Matrix<T> vigenvector();
+  Matrix<T> vigenVector();
+
+  Matrix<T> inverse();
+
+  long long getDeterminant() const;
+
+  long long getTrace() const;
 
   ~Matrix();
 };
