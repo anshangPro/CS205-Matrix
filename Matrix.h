@@ -22,9 +22,9 @@ public:
 
     Matrix(size_t col, size_t row);
 
-    Matrix(Matrix const &a);
+    Matrix(Matrix<T> const &a);
 
-    Matrix operator+(Matrix const &mat) const;
+    Matrix<T> operator+(Matrix<T> const &mat) const;
 
     T get(size_t col, size_t row) const;
 
@@ -32,8 +32,14 @@ public:
 
     void print() const;
 
+    void reshape(size_t col, size_t row);
+
+    Matrix<T> slicing(size_t col_begin, size_t col_end, size_t row_begin, size_t row_end);
+
     ~Matrix();
 };
 
+template<typename T>
+Matrix<T> convolution(Matrix<T> a, Matrix<T> b);
 
 #endif //MATRIX_MATRIX_H
