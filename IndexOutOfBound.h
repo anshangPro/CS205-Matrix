@@ -2,7 +2,7 @@
 // Created by ay871 on 2022/6/6.
 //
 #include <exception>
-#include <stdio.h>
+#include <cstdio>
 
 class IndexOutOfBound: public std::exception{
 private:
@@ -11,7 +11,7 @@ private:
 public:
     IndexOutOfBound(size_t col, size_t row): col(col), row(row){}
 
-    const char * what(){
+    const char* what() const noexcept override{
         char* info = new char[100];
         sprintf(info, "Index out of matrix bound: %zu, %zu.", col, row);
         return info;
