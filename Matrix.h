@@ -42,6 +42,6 @@ public:
 };
 
 template<typename T>
-Matrix<T> convolution(Matrix<T> a, Matrix<T> b);
+Matrix<T> convolution(Matrix<T> a, Matrix<T> kernel);
 
 #endif //MATRIX_MATRIX_H

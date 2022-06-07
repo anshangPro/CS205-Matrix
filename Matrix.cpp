@@ -95,6 +95,6 @@ Matrix<T> Matrix<T>::slicing(size_t col_begin, size_t col_end, size_t row_begin,
 }
 
 template<typename T>
-Matrix<T> convolution(Matrix<T> a, Matrix<T> b) {
+Matrix<T> convolution(Matrix<T> a, Matrix<T> kernel) {
 
 }
