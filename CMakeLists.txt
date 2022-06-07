@@ -1,14 +1,11 @@
-cmake_minimum_required(VERSION 3.0)
-project(Matrix)
+cmake_minimum_required(VERSION 3.21)
+project(project)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
-include_directories("/usr/include/opencv4/opencv2/")
-include_directories("/usr/include/opencv4/")
+add_executable(project main.cpp Matrix.cpp)
+set(OpenCV_DIR D:\\opencv\\opencv\\mingw-build2)
+find_package(OpenCV REQUIRED)
+include_directories(${OpenCV_INCLUDE_DIRS})
+target_link_libraries(project ${OpenCV_LIBS})
 
-add_definitions(-D_GLIBCXX_USE_CXX11_ABI=0)
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lopencv_core -lopencv_highgui -lopencv_imgcodecs")
-add_executable(Matrix main.cpp)
-
-add_executable(test test.cpp)

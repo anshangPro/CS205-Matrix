@@ -32,6 +32,28 @@ private:
 
   Matrix<T> operator+(Matrix<T> const &mat) const;
 
+    //3)
+    Matrix operator-(Matrix const &mat) const;
+
+    static Matrix scalarMultiplication(double const &k, Matrix const &mat);
+
+    static Matrix scalarDivision(double const &k, Matrix const &mat);
+
+    static Matrix transposition(Matrix const &mat);
+
+    static Matrix conjugation(Matrix const &mat);
+
+    static Matrix elementMultiplication(Matrix const &mat_a, Matrix const &mat_b);
+
+    static Matrix matrixMultiplication(Matrix const &mat_a, Matrix const &mat_b);
+
+    static Matrix vectorMultiplication(Matrix const &mat_a, Matrix const &vec);
+
+    static Matrix dotProduct(Matrix const &mat_a, Matrix const &mat_b);
+
+    static Matrix crossProduct(Matrix const &mat_a, Matrix const &mat_b);
+    //3)
+
   T get(size_t col, size_t row) const;
 
   void set(size_t col, size_t row, T value) const;
