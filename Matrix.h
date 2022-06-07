@@ -6,40 +6,48 @@
 #define MATRIX_MATRIX_H
 
 #include <malloc.h>
+
 #include <cstring>
 #include <iostream>
+
 #include "IndexOutOfBound.h"
 
-template<class T>
+template <class T>
 class Matrix {
-private:
-    T *data;
-    size_t size;
-    size_t m_col, m_row;
-    bool isValid(size_t col, size_t row) const;
-public:
-    Matrix() : data(nullptr), size(0), m_col(0), m_row(0) {}
+ private:
+  T *data;
+  size_t size;
+  size_t m_col, m_row;
+  bool isValid(size_t col, size_t row) const;
 
-    Matrix(size_t col, size_t row);
+ public:
+  Matrix() : data(nullptr), size(0), m_col(0), m_row(0) {}
 
-    Matrix(Matrix<T> const &a);
+  Matrix(size_t col, size_t row);
 
-    Matrix<T> operator+(Matrix<T> const &mat) const;
+  Matrix(Matrix<T> const &a);
 
-    T get(size_t col, size_t row) const;
+  Matrix<T> operator+(Matrix<T> const &mat) const;
 
-    void set(size_t col, size_t row, T value) const;
+  T get(size_t col, size_t row) const;
 
-    void print() const;
+  void set(size_t col, size_t row, T value) const;
 
-    void reshape(size_t col, size_t row);
+  void print() const;
 
-    Matrix<T> slicing(size_t col_begin, size_t col_end, size_t row_begin, size_t row_end);
+  void reshape(size_t col, size_t row);
 
-    ~Matrix();
+  Matrix<T> slicing(size_t col_begin, size_t col_end, size_t row_begin,
+                    size_t row_end);
+
+  Matrix<T> vigenvalue();
+
+  Matrix<T> vigenvector();
+
+  ~Matrix();
 };
 
-template<typename T>
+template <typename T>
 Matrix<T> convolution(Matrix<T> a, Matrix<T> b);
 
-#endif //MATRIX_MATRIX_H
+#endif  // MATRIX_MATRIX_H
