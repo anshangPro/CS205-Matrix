@@ -17,8 +17,8 @@ template <class T>
 class Matrix {
   
 private:
-    std::unique_ptr<T[]> data;
-    // T *data;
+    // std::unique_ptr<T[]> data;
+    T *data;
     size_t size;
     size_t m_col, m_row;
     bool isValid(size_t col, size_t row) const;
