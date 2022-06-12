@@ -70,7 +70,7 @@ long long trace(T *matrix, int n) {
 template <class T>
 bool inverse(int n, T *aa, T *re) {
   double det_aa = determinant(aa, n);
-  if (det_aa == 0) {
+  if (abs(det_aa) == 0) {
     throw NoInverseMatrix();
     return false;
   }
@@ -100,7 +100,7 @@ bool inverse(int n, T *aa, T *re) {
         q = 1;
       else
         q = (-1);
-      adjoint[ai * n + aj] = q * determinant(bb, n - 1);
+      adjoint[ai * n + aj] = q * abs(determinant(bb, n - 1));
     }
   }
   for (int i = 0; i < n; i++) {
