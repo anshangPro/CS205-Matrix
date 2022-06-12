@@ -53,13 +53,13 @@ Matrix<T>::~Matrix() {
 template<class T>
 T Matrix<T>::get(size_t col, size_t row) const {
     if (!isValid(col, row)) throw IndexOutOfBound(col, row);
-    return *(data + row * this->m_row + col);
+    return *(data + row * this->m_col + col);
 }
 
 template<class T>
 void Matrix<T>::set(size_t col, size_t row, T value) const {
     if (!isValid(col, row)) throw IndexOutOfBound(col, row);
-    *(data + row * this->m_row + col) = value;
+    *(data + row * this->m_col + col) = value;
 }
 
 template<class T>
@@ -89,7 +89,7 @@ Matrix<T> Matrix<T>::slicing(size_t col_begin, size_t col_end, size_t row_begin,
     T *res_data = res.data;
     for (int i = 0; i < row; i++) {
         memcpy(res_data, temp, row * sizeof(T));
-        temp += this->m_row;
+        temp += this->m_col;
         res_data += row;
     }
 }
@@ -114,7 +114,7 @@ Matrix<T> Matrix<T>::convolution(const Matrix<T> &a, const Matrix<T> &kernel) { 
             temp = 0;
             for(int p = 0; p < kernel.m_row; p++){
                 for(int q = 0; q < kernel.m_col; q++){
-                    temp += *(p_k + kernel.m_row * p + q) * *(p_e + extended.m_row * (i + p) + j + q);
+                    temp += *(p_k + kernel.m_col * p + q) * *(p_e + extended.m_col * (i + p) + j + q);
                 }
             }
             res.set(j, i, temp);
