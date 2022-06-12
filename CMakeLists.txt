@@ -8,7 +8,9 @@ include_directories("/usr/include/opencv4/")
 
 add_definitions(-D_GLIBCXX_USE_CXX11_ABI=0)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lopencv_core -lopencv_highgui -lopencv_imgcodecs")
-add_executable(Matrix main.cpp)
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lopencv_core -lopencv_highgui -lopencv_imgcodecs")
+add_executable(main main.cpp)
 
-add_executable(test test.cpp)
+add_executable(test test.cpp Matrix.cpp)
+
+#add_executable(matrix Matrix.cpp)

@@ -1,7 +1,6 @@
 //
 // Created by ay871 on 2022/6/6.
 //
-
 #include "Matrix.h"
 
 template<class T>
@@ -17,16 +16,17 @@ bool Matrix<T>::isValid(size_t col_begin, size_t col_end, size_t row_begin, size
 
 template<class T>
 Matrix<T>::Matrix(size_t col, size_t row): size(col * row), m_col(col), m_row(row) {
-    this->data = malloc(size * sizeof(T));
+    this->data = (T*)malloc(size * sizeof(T));
+    memset(this->data, 0, size * sizeof(T));
 }
 
 template<class T>
 Matrix<T>::Matrix(const Matrix<T> &a) {
-    this->col = a.col;
-    this->row = a.row;
+    this->m_col = a.m_col;
+    this->m_row = a.m_row;
     this->size = a.size;
-    this->data = malloc(size * sizeof(T));
-    memcpy(this->data, a.data, size);
+    this->data = (T*)malloc(size * sizeof(T));
+    memcpy(this->data, a.data, size * sizeof(T));
 }
 
 template<class T>
@@ -53,21 +53,21 @@ Matrix<T>::~Matrix() {
 template<class T>
 T Matrix<T>::get(size_t col, size_t row) const {
     if (!isValid(col, row)) throw IndexOutOfBound(col, row);
-    return *(data + col * this->m_col + row);
+    return *(data + row * this->m_row + col);
 }
 
 template<class T>
 void Matrix<T>::set(size_t col, size_t row, T value) const {
     if (!isValid(col, row)) throw IndexOutOfBound(col, row);
-    *(data + col * this->m_col + row) = value;
+    *(data + row * this->m_row + col) = value;
 }
 
 template<class T>
 void Matrix<T>::print() const {
     T *temp = data;
-    for (int i = 0; i < m_col; i++) {
-        for (int j = 0; j < m_row; j++) {
-            std::cout << temp++ << '\t';
+    for (int i = 0; i < m_row; i++) {
+        for (int j = 0; j < m_col; j++) {
+            std::cout << *temp++ << '\t';
         }
         std::cout << std::endl;
     }
@@ -94,7 +94,42 @@ Matrix<T> Matrix<T>::slicing(size_t col_begin, size_t col_end, size_t row_begin,
     }
 }
 
-template<typename T>
-Matrix<T> convolution(Matrix<T> a, Matrix<T> kernel) {
+template<class T>
+Matrix<T> Matrix<T>::convolution(const Matrix<T> &a, const Matrix<T> &kernel) { // need square and odd kernel
+    Matrix<T> extended(a.m_col + kernel.m_col - 1, a.m_row + kernel.m_row - 1);
+    T* p_e = extended.data + extended.m_row * (kernel.m_row/2) + kernel.m_col/2;
+    T* p_a = a.data;
+    for(int i = 0; i < a.m_row; i++){
+        memcpy(p_e, p_a, a.m_col * sizeof(T));
+        p_a += a.m_col;
+        p_e += extended.m_col;
+    }
+    Matrix<T> res(a.m_col, a.m_row);
+    p_e = extended.data;
+    auto kernel_flip = flip(kernel);
+    T* p_k = kernel_flip.data;
+    T temp;
+    for(int i = 0; i < a.m_row; i++){
+        for(int j = 0; j < a.m_col; j++){
+            temp = 0;
+            for(int p = 0; p < kernel.m_row; p++){
+                for(int q = 0; q < kernel.m_col; q++){
+                    temp += *(p_k + kernel.m_row * p + q) * *(p_e + extended.m_row * (i + p) + j + q);
+                }
+            }
+            res.set(j, i, temp);
+        }
+    }
+    return res;
+}
 
+template<class T>
+Matrix<T> Matrix<T>::flip(const Matrix<T> &kernel) {
+    Matrix<T> res(kernel.m_col, kernel.m_row);
+    T* ori = kernel.data + kernel.size - 1;
+    T* dst = res.data;
+    for(int i = 0; i < kernel.size; i++){
+        *dst++ = *ori--;
+    }
+    return res;
 }
