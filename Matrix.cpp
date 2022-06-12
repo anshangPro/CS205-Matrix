@@ -5,13 +5,13 @@
 
 template<class T>
 bool Matrix<T>::isValid(size_t col, size_t row) const {
-    return col >= 0 && col <= this->m_col && row >= 0 && row <= this->m_row;
+    return col >= 0 && col < this->m_col && row >= 0 && row < this->m_row;
 }
 
 template<class T>
 bool Matrix<T>::isValid(size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) const {
-    return col_begin >= 0 && col_end <= this->m_col && row_begin >= 0
-           && row_end <= this->m_row && col_begin <= col_end && row_begin <= row_end;
+    return col_begin >= 0 && col_end < this->m_col && row_begin >= 0
+           && row_end < this->m_row && col_begin <= col_end && row_begin <= row_end;
 }
 
 template<class T>
@@ -83,15 +83,16 @@ void Matrix<T>::reshape(size_t col, size_t row) {
 template<class T>
 Matrix<T> Matrix<T>::slicing(size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
     if (!isValid(col_begin, col_end, row_begin, row_end)) throw IndexOutOfBound(col_begin, col_end, row_begin, row_end);
-    size_t col = col_end - col_begin, row = row_end - row_begin;
+    size_t col = col_end - col_begin + 1, row = row_end - row_begin + 1;
     Matrix<T> res(col, row);
-    T *temp = this->data + col_begin;
+    T *temp = this->data + col_begin + this->m_col * row_begin;
     T *res_data = res.data;
     for (int i = 0; i < row; i++) {
-        memcpy(res_data, temp, row * sizeof(T));
+        memcpy(res_data, temp, col * sizeof(T));
         temp += this->m_col;
-        res_data += row;
+        res_data += col;
     }
+    return res;
 }
 
 template<class T>
@@ -106,7 +107,7 @@ Matrix<T> Matrix<T>::convolution(const Matrix<T> &a, const Matrix<T> &kernel) { 
     }
     Matrix<T> res(a.m_col, a.m_row);
     p_e = extended.data;
-    auto kernel_flip = flip(kernel);
+    Matrix<T> kernel_flip = flip(kernel);
     T* p_k = kernel_flip.data;
     T temp;
     for(int i = 0; i < a.m_row; i++){
