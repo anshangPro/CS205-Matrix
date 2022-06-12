@@ -54,11 +54,13 @@ private:
 
   long long getTrace() const;
 
+  static Matrix<T> convolution(Matrix<T> const & a, Matrix<T> const & kernel);
+
+  static Matrix<T> flip(Matrix<T> const & kernel);
+
   ~Matrix();
 };
 
-template<typename T>
-Matrix<T> convolution(Matrix<T> a, Matrix<T> kernel);
 
 template<class T>
 bool Matrix<T>::isValid(size_t col, size_t row) const {
