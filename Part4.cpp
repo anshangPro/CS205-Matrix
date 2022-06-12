@@ -3,8 +3,11 @@
 #include <cmath>
 #include <cstring>
 #include <map>
+#include <complex>
 
 using namespace std;
+
+const double DBL_MIN = 1E-10;
 
 template <class T>
 void QRBreakDown(T *A, size_t n, T *Q_temp, T *R_temp) {
@@ -32,30 +35,30 @@ void QRBreakDown(T *A, size_t n, T *Q_temp, T *R_temp) {
   }
 }
 
-template <class T>
-long long determinant(T *matrix, int n) {
-  long long det = 0;
-  auto submatrix = new T[(n - 1) * (n - 1)];
-  if (n == 2)
-    return ((matrix[0] * matrix[3]) - (matrix[2] * matrix[1]));
-  else {
-    for (int x = 0; x < n; x++) {
-      int subi = 0;
-      for (int i = 1; i < n; i++) {
-        int subj = 0;
-        for (int j = 0; j < n; j++) {
-          if (j == x) {
-            continue;
-          }
-          submatrix[subi * (n - 1) + subj] = matrix[i * n + j];
-          subj++;
+template<class T>
+T determinant(T *matrix, int n) {
+    T det = 0;
+    auto submatrix = new T[(n - 1) * (n - 1)];
+    if (n == 2)
+        return ((matrix[0] * matrix[3]) - (matrix[2] * matrix[1]));
+    else {
+        for (int x = 0; x < n; x++) {
+            int subi = 0;
+            for (int i = 1; i < n; i++) {
+                int subj = 0;
+                for (int j = 0; j < n; j++) {
+                    if (j == x) {
+                        continue;
+                    }
+                    submatrix[subi * (n - 1) + subj] = matrix[i * n + j];
+                    subj++;
+                }
+                subi++;
+            }
+            det = det + (pow(-1, x) * matrix[x] * determinant(submatrix, n - 1));
         }
-        subi++;
-      }
-      det = det + (pow(-1, x) * matrix[x] * determinant(submatrix, n - 1));
     }
-  }
-  return det;
+    return det;
 }
 
 template <class T>
@@ -69,8 +72,8 @@ long long trace(T *matrix, int n) {
 
 template <class T>
 bool inverse(int n, T *aa, T *re) {
-  double det_aa = determinant(aa, n);
-  if (abs(det_aa) == 0) {
+  T det_aa = determinant(aa, n);
+  if (abs(det_aa) < DBL_MIN) {
     throw NoInverseMatrix();
     return false;
   }
@@ -89,17 +92,72 @@ bool inverse(int n, T *aa, T *re) {
           }
           if (aj > bj) {
             pj = 0;
-          }
-          else {
+          } else {
             pj = 1;
           }
           bb[bi * (n - 1) + bj] = aa[(bi + pi) * n + bj + pj];
         }
       }
-      if ((ai + aj) % 2 == 0)
+      if ((ai + aj) % 2 == 0) {
         q = 1;
-      else
+      }
+      else {
         q = (-1);
+      }
+      adjoint[ai * n + aj] = q * determinant(bb, n - 1);
+    }
+  }
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < i; j++) {
+      T tem = adjoint[i * n + j];
+      adjoint[i * n + j] = adjoint[j * n + i];
+      adjoint[j * n + i] = tem;
+    }
+  }
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+      re[i * n + j] = adjoint[i * n + j] / det_aa;
+    }
+  }
+  delete[] adjoint;
+  delete[] bb;
+  return true;
+}
+
+template <class T>
+bool inverse(int n, complex<T> *aa, complex<T> *re) {
+  T det_aa = determinant(aa, n);
+  if (abs(det_aa) < DBL_MIN) {
+    throw NoInverseMatrix();
+    return false;
+  }
+  T *adjoint = new T[n * n];
+  T *bb = new T[(n - 1) * (n - 1)];
+
+  int pi, pj, q;
+  for (int ai = 0; ai < n; ai++) {
+    for (int aj = 0; aj < n; aj++) {
+      for (int bi = 0; bi < n - 1; bi++) {
+        for (int bj = 0; bj < n - 1; bj++) {
+          if (ai > bi) {
+            pi = 0;
+          } else {
+            pi = 1;
+          }
+          if (aj > bj) {
+            pj = 0;
+          } else {
+            pj = 1;
+          }
+          bb[bi * (n - 1) + bj] = aa[(bi + pi) * n + bj + pj];
+        }
+      }
+      if ((ai + aj) % 2 == 0) {
+        q = 1;
+      }
+      else {
+        q = (-1);
+      }
       adjoint[ai * n + aj] = q * abs(determinant(bb, n - 1));
     }
   }
