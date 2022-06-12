@@ -47,10 +47,12 @@ private:
 
   Matrix<T> vigenvector();
 
+  static Matrix<T> convolution(Matrix<T> const & a, Matrix<T> const & kernel);
+
+  static Matrix<T> flip(Matrix<T> const & kernel);
+
   ~Matrix();
 };
 
-template<typename T>
-Matrix<T> convolution(Matrix<T> a, Matrix<T> kernel);
 
 #endif  // MATRIX_MATRIX_H
