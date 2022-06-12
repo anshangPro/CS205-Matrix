@@ -95,39 +95,46 @@ Matrix<T>::Matrix(const Matrix<T> &a) {
     this->data = (T*)malloc(size * sizeof(T));
     memcpy(this->data, a.data, size * sizeof(T));
 }
-template<class T>
+template <class T>
 Matrix<T>::Matrix(Matrix<T> &&a) noexcept {
-    std::cout << "Matrix Move Constructor from:" << &a << " to:" << this << std::endl;
+  std::cout << "Matrix Move Constructor from:" << &a << " to:" << this
+            << std::endl;
+  if (&a != this) {
     this->m_col = a.m_col;
     this->m_row = a.m_row;
     this->size = a.size;
     this->data = a.data;
     a.data = nullptr;
+  }
 }
 
-template<class T>
+template <class T>
 Matrix<T> &Matrix<T>::operator=(Matrix<T> &a) {
-    // copy assignment
-    std::cout << "Matrix Copy Assignment from:" << &a << " to:" << this << std::endl;
-    this->~Matrix();
-    this->m_col = a.m_col;
-    this->m_row = a.m_row;
-    this->size = a.size;
-    this->data = (T*)malloc(size * sizeof(T));
-    memcpy(this->data, a.data, size * sizeof(T));
-    return *this;
+  // copy assignment
+  std::cout << "Matrix Copy Assignment from:" << &a << " to:" << this
+            << std::endl;
+  this->~Matrix();
+  this->m_col = a.m_col;
+  this->m_row = a.m_row;
+  this->size = a.size;
+  this->data = (T *)malloc(size * sizeof(T));
+  memcpy(this->data, a.data, size * sizeof(T));
+  return *this;
 }
 
 template<class T>
 Matrix<T> &Matrix<T>::operator=(Matrix<T> &&a) noexcept {
     // copy assignment
-    std::cout << "Matrix Move Assignment from:" << &a << " to:" << this << std::endl;
-    this->~Matrix();
-    this->m_col = a.m_col;
-    this->m_row = a.m_row;
-    this->size = a.size;
-    this->data = a.data;
-    a.data = nullptr;
+    std::cout << "Matrix Move Assignment from:" << &a << " to:" << this
+              << std::endl;
+    if (&a != this) {
+      this->~Matrix();
+      this->m_col = a.m_col;
+      this->m_row = a.m_row;
+      this->size = a.size;
+      this->data = a.data;
+      a.data = nullptr;
+    }
     return *this;
 }
 
