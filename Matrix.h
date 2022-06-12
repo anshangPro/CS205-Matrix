@@ -31,6 +31,12 @@ private:
 
   Matrix(const Matrix<T> &a);   // copy constructor
 
+  Matrix(Matrix<T> &&a) noexcept;        // move constructor
+
+  Matrix<T> &operator=(Matrix<T> &matrix); // copy assignment
+
+  Matrix<T> &operator=(Matrix<T> &&matrix) noexcept; // move assignment
+
   Matrix<T> operator+(Matrix<T> const &mat) const;
 
   T get(size_t col, size_t row) const;
@@ -77,19 +83,64 @@ template<class T>
 Matrix<T>::Matrix(size_t col, size_t row): size(col * row), m_col(col), m_row(row) {
     this->data = (T*)malloc(size * sizeof(T));
     memset(this->data, 0, size * sizeof(T));
+    std::cout << "Matrix Allocated: " << this << " data_ptr:" << this->data << std::endl;
 }
 
 template<class T>
 Matrix<T>::Matrix(const Matrix<T> &a) {
+    std::cout << "Matrix Copy Constructor from:" << &a << " to:" << this << std::endl;
     this->m_col = a.m_col;
     this->m_row = a.m_row;
     this->size = a.size;
     this->data = (T*)malloc(size * sizeof(T));
     memcpy(this->data, a.data, size * sizeof(T));
 }
+template <class T>
+Matrix<T>::Matrix(Matrix<T> &&a) noexcept {
+  std::cout << "Matrix Move Constructor from:" << &a << " to:" << this
+            << std::endl;
+  if (&a != this) {
+    this->m_col = a.m_col;
+    this->m_row = a.m_row;
+    this->size = a.size;
+    this->data = a.data;
+    a.data = nullptr;
+  }
+}
+
+template <class T>
+Matrix<T> &Matrix<T>::operator=(Matrix<T> &a) {
+  // copy assignment
+  std::cout << "Matrix Copy Assignment from:" << &a << " to:" << this
+            << std::endl;
+  this->~Matrix();
+  this->m_col = a.m_col;
+  this->m_row = a.m_row;
+  this->size = a.size;
+  this->data = (T *)malloc(size * sizeof(T));
+  memcpy(this->data, a.data, size * sizeof(T));
+  return *this;
+}
+
+template<class T>
+Matrix<T> &Matrix<T>::operator=(Matrix<T> &&a) noexcept {
+    // copy assignment
+    std::cout << "Matrix Move Assignment from:" << &a << " to:" << this
+              << std::endl;
+    if (&a != this) {
+      this->~Matrix();
+      this->m_col = a.m_col;
+      this->m_row = a.m_row;
+      this->size = a.size;
+      this->data = a.data;
+      a.data = nullptr;
+    }
+    return *this;
+}
 
 template<class T>
 Matrix<T> Matrix<T>::operator+(const Matrix<T> &mat) const {
+    std::cout << "Matrix add "<<this<<" "<<&mat<< std::endl;
     T *a = this->data;
     T *b = mat.data;
     Matrix<T> res(this->m_col, this->m_row);
@@ -105,6 +156,7 @@ Matrix<T> Matrix<T>::operator+(const Matrix<T> &mat) const {
 
 template<class T>
 Matrix<T>::~Matrix() {
+    std::cout << "Matrix Destructor:" << this << " data_ptr:" << this->data << std::endl;
     delete (this->data);
     this->data = nullptr;
 }
