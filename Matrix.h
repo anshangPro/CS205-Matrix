@@ -13,6 +13,7 @@
 
 #include "IndexOutOfBound.h"
 #include "SizeNotEqual.h"
+#include "NotSquareMatrix.h"
 
 template<class T>
 class Matrix {
@@ -137,8 +138,8 @@ Matrix<T> &Matrix<T>::operator=(Matrix<T> const &a) {
 template<class T>
 Matrix<T> &Matrix<T>::operator=(Matrix<T> &&a) noexcept {
     // copy assignment
-    std::cout << "Matrix Move Assignment from:" << &a << " to:" << this
-              << std::endl;
+//    std::cout << "Matrix Move Assignment from:" << &a << " to:" << this
+//              << std::endl;
     if (&a != this) {
         this->~Matrix();
         this->m_col = a.m_col;
@@ -180,7 +181,9 @@ T Matrix<T>::get(size_t col, size_t row) const {
 }
 
 template<class T>
-T *Matrix<T>::getData() const { return this->data; }
+T *Matrix<T>::getData() const {
+    return this->data;
+}
 
 template<class T>
 void Matrix<T>::set(size_t col, size_t row, T value) const {
@@ -278,7 +281,7 @@ long long Matrix<T>::getDeterminant() const {
     T *matrix = this->data;
     int n = this->m_col;
     T det = 0;
-    auto submatrix = new T[(n - 1) * (n - 1)];
+    auto subMatrix = new T[(n - 1) * (n - 1)];
     if (n == 2)
         return ((matrix[0] * matrix[3]) - (matrix[2] * matrix[1]));
     else {
@@ -290,12 +293,12 @@ long long Matrix<T>::getDeterminant() const {
                     if (j == x) {
                         continue;
                     }
-                    submatrix[subi * (n - 1) + subj] = matrix[i * n + j];
+                    subMatrix[subi * (n - 1) + subj] = matrix[i * n + j];
                     subj++;
                 }
                 subi++;
             }
-            det = det + (pow(-1, x) * matrix[x] * determinant(submatrix, n - 1));
+            det = det + (pow(-1, x) * matrix[x] * determinant(subMatrix, n - 1));
         }
     }
     return det;
