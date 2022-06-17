@@ -1,3 +1,6 @@
+#ifndef Part4NEW_H
+#define Part4NEW_H
+
 #include <memory>
 #include <iostream>
 #include <cstring>
@@ -5,6 +8,8 @@
 #include <complex>
 #include <type_traits>
 #include <cassert>
+
+
 
 #define TEMPLATE_T template<class T>
 const double DBL_MIN = 1E-10;
@@ -41,6 +46,10 @@ public:
         size = other.size;
         data = std::move(other.data);
     } // move constructor
+
+    SMatrix(T* data, size_t size) : size(size), data(new T[size * size]) {
+        memcpy(this->data.get(), data, size * size * sizeof(T));
+    }
 
     SMatrix &operator=(const SMatrix &other) = delete;
 
@@ -406,48 +415,48 @@ type_name() {
     return r;
 }
 
-int main() {
-    using namespace std;
+// int main() {
+//     using namespace std;
 
-    SMatrix<std::complex<double>> A(2);
-    //SMatrix<double> A(2);
-    A[0][0] = 6.0 + 1i;
-    A[0][1] = -1;
-    //A[0][2] = 2;
-    A[1][0] = 2;
-    A[1][1] = 3;
-//    A[1][2] = 4;
-//    A[2][0] = 7;
-//    A[2][1] = 8;
-//    A[2][2] = 8;
-    auto b = matrixInverse(A);
-    b.print();
+//     SMatrix<std::complex<double>> A(2);
+//     //SMatrix<double> A(2);
+//     A[0][0] = 6.0 + 1i;
+//     A[0][1] = -1;
+//     //A[0][2] = 2;
+//     A[1][0] = 2;
+//     A[1][1] = 3;
+// //    A[1][2] = 4;
+// //    A[2][0] = 7;
+// //    A[2][1] = 8;
+// //    A[2][2] = 8;
+//     auto b = matrixInverse(A);
+//     b.print();
 
-//    const auto cstA(A);
-//    cout << type_name<decltype(cstA)>() << endl;
-//    cout << type_name<decltype(cstA[0])>() << endl;
-//    cout << type_name<decltype(cstA[0][0])>() << endl;
-//    cout << "A:" << endl;
-//    cout << type_name<decltype(A)>() << endl;
-//    cout << type_name<decltype(A[0])>() << endl;
-//    cout << type_name<decltype(A[0][0])>() << endl;
+// //    const auto cstA(A);
+// //    cout << type_name<decltype(cstA)>() << endl;
+// //    cout << type_name<decltype(cstA[0])>() << endl;
+// //    cout << type_name<decltype(cstA[0][0])>() << endl;
+// //    cout << "A:" << endl;
+// //    cout << type_name<decltype(A)>() << endl;
+// //    cout << type_name<decltype(A[0])>() << endl;
+// //    cout << type_name<decltype(A[0][0])>() << endl;
 
 
-    A.print();
-    auto QR = matrixQrDecomposition(A);
-    cout << "Q:" << endl;
-    QR.first.print();
-    cout << "R:" << endl;
-    QR.second.print();
-    auto eigValue = matrixEigValue(A, 1000);
-    cout << "eig:" << endl;
-    eigValue.print();
+//     A.print();
+//     auto QR = matrixQrDecomposition(A);
+//     cout << "Q:" << endl;
+//     QR.first.print();
+//     cout << "R:" << endl;
+//     QR.second.print();
+//     auto eigValue = matrixEigValue(A, 1000);
+//     cout << "eig:" << endl;
+//     eigValue.print();
 
-    auto eigVector = matrixEigVector(A, eigValue, 1000);
-    cout << "eigVector:" << endl;
-    eigVector.print();
-    return 0;
-}
+//     auto eigVector = matrixEigVector(A, eigValue, 1000);
+//     cout << "eigVector:" << endl;
+//     eigVector.print();
+//     return 0;
+// }
 
 //template<class T, class is_complex>
 //struct GetIntermediaType;
@@ -478,3 +487,4 @@ int main() {
 //void test(T a){
 //
 //};
+#endif //Part4NEW_H
