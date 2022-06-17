@@ -9,7 +9,7 @@ int main() {
     B.set(0, 1, 2);
     B.set(1, 0, 3);
     B.set(1, 1, 4);
-    auto C = B.eigenVector();
+    auto C = B.inverse();
     cout<<"-----------------"<<endl;
     C.print();
     cout<<"-----------------"<<endl;

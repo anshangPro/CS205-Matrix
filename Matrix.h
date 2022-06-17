@@ -63,9 +63,9 @@ public:
 
   Matrix<T> inverse();
 
-  long long getDeterminant() const;
+  T getDeterminant() const;
 
-  long long getTrace() const;
+  T getTrace() const;
 
   static Matrix<T> convolution(Matrix<T> const &a, Matrix<T> const &kernel);
 
@@ -244,7 +244,7 @@ template <class T> Matrix<T> Matrix<T>::inverse(){
   return res;
 }
 
-template <class T> long long Matrix<T>::getTrace() const {
+template <class T> T Matrix<T>::getTrace() const {
   T *matrix = this.data;
   int n = this.m_col;
   long long trace = 0;
@@ -254,11 +254,11 @@ template <class T> long long Matrix<T>::getTrace() const {
   return trace;
 }
 
-template <class T> long long Matrix<T>::getDeterminant() const {
+template <class T> T Matrix<T>::getDeterminant() const {
   T *matrix = this.data;
   int n = this.m_col;
   T det = 0;
-  auto submatrix = new T[(n - 1) * (n - 1)];
+  T* submatrix = new T[(n - 1) * (n - 1)];
   if (n == 2)
     return ((matrix[0] * matrix[3]) - (matrix[2] * matrix[1]));
   else {
