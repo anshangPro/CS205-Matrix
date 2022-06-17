@@ -206,8 +206,7 @@ template <class T> Matrix<T> Matrix<T>::eigenValue() {
   return res;
 }
 
-template <class T> 
-Matrix<T> Matrix<T>::eigenValue(int times) {
+template <class T> Matrix<T> Matrix<T>::eigenValue(int times) {
   SMatrix<T> A(this->data, this->m_col);
   auto eigValue = matrixEigValue(A, times);
   Matrix<T> res(eigValue.size, 1);
@@ -217,24 +216,69 @@ Matrix<T> Matrix<T>::eigenValue(int times) {
   return res;
 }
 
-template <class T> 
-Matrix<T> Matrix<T>::eigenVector() {
+template <class T> Matrix<T> Matrix<T>::eigenVector() {
   SMatrix<T> A(this->data, this->m_col);
   auto eigValue = matrixEigValue(A, 1000);
   auto eigVector = matrixEigVector(A, eigValue, 1000);
   Matrix<T> res(eigVector.size, eigVector.size);
-  memcpy(res.data, eigVector.data.get(), eigVector.size*eigVector.size * sizeof(T));
+  memcpy(res.data, eigVector.data.get(),
+         eigVector.size * eigVector.size * sizeof(T));
   return res;
 }
 
-template <class T> 
-Matrix<T> Matrix<T>::eigenVector(int times) {
+template <class T> Matrix<T> Matrix<T>::eigenVector(int times) {
   SMatrix<T> A(this->data, this->m_col);
   auto eigValue = matrixEigValue(A, times);
   auto eigVector = matrixEigVector(A, eigValue, times);
   Matrix<T> res(eigVector.size, eigVector.size);
-  memcpy(res.data, eigVector.data.get(), eigVector.size*eigVector.size * sizeof(T));
+  memcpy(res.data, eigVector.data.get(),
+         eigVector.size * eigVector.size * sizeof(T));
   return res;
+}
+template <class T> Matrix<T> Matrix<T>::inverse(){
+  SMatrix<T> A(this->data, this->m_col);
+  auto inv = matrixInverse(A);
+  Matrix<T> res(inv.size, inv.size);
+  memcpy(res.data, inv.data.get(),
+         inv.size * inv.size * sizeof(T));
+  return res;
+}
+
+template <class T> long long Matrix<T>::getTrace() const {
+  T *matrix = this.data;
+  int n = this.m_col;
+  long long trace = 0;
+  for (int i = 0; i < n; i++) {
+    trace += matrix[i * n + i];
+  }
+  return trace;
+}
+
+template <class T> long long Matrix<T>::getDeterminant() const {
+  T *matrix = this.data;
+  int n = this.m_col;
+  T det = 0;
+  auto submatrix = new T[(n - 1) * (n - 1)];
+  if (n == 2)
+    return ((matrix[0] * matrix[3]) - (matrix[2] * matrix[1]));
+  else {
+    for (int x = 0; x < n; x++) {
+      int subi = 0;
+      for (int i = 1; i < n; i++) {
+        int subj = 0;
+        for (int j = 0; j < n; j++) {
+          if (j == x) {
+            continue;
+          }
+          submatrix[subi * (n - 1) + subj] = matrix[i * n + j];
+          subj++;
+        }
+        subi++;
+      }
+      det = det + (pow(-1, x) * matrix[x] * determinant(submatrix, n - 1));
+    }
+  }
+  return det;
 }
 
 template <class T>
