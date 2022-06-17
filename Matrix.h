@@ -9,10 +9,11 @@
 
 #include <cstring>
 #include <iostream>
-
+#include <complex>
 #include "IndexOutOfBound.h"
 #include "SizeNotEqual.h"
-
+#include "DivisorBeZero.h"
+#include "NotVector.h"
 template <class T>
 class Matrix {
   
@@ -42,6 +43,7 @@ private:
     static Matrix transposition(Matrix const &mat);
 
     static Matrix conjugation(Matrix const &mat);
+
 
     static Matrix elementMultiplication(Matrix const &mat_a, Matrix const &mat_b);
 
@@ -78,6 +80,26 @@ private:
   ~Matrix();
 };
 
+template<typename T>
+static Matrix<std::complex<T>> conjugation(Matrix<std::complex<T>> const &mat){
+    std::complex<T> *a;
+    Matrix<std::complex<T>> res(mat.m_row, mat.m_col);
+    std::complex<T> *ans = res.data;
+    for (int i = 0; i < mat.m_col; ++i) {
+        a = mat.data + i;
+        for (int j = 0; j < mat.m_row; j++) {
+            *ans = *a;
+            ans++;
+            a += mat.m_col;
+        }
+    }
+    std::complex<T> *ans1 = res.data;
+    for (int k = 0; k < res.size; ++k) {
+        *ans1 = conj(*ans1);
+        ans1++;
+    }
+    return res;
+}
 template<typename T>
 Matrix<T> convolution(Matrix<T> a, Matrix<T> kernel);
 

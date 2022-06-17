@@ -4,6 +4,8 @@
 
 #include "Matrix.h"
 #include <iostream>
+#include <complex>
+#include <exception>
 using namespace std;
 
 template<class T>
@@ -34,6 +36,9 @@ Matrix<T>::Matrix(const Matrix<T> &a) {
 
 template<class T>
 Matrix<T> Matrix<T>::operator+(const Matrix<T> &mat) const {
+    if (mat.m_col != this->m_col || mat.m_row != this->m_row){
+        throw SizeNotEqual(mat.size,this->size);
+    }
     T *a = this->data;
     T *b = mat.data;
     Matrix<T> res(this->m_col, this->m_row);
@@ -49,6 +54,9 @@ Matrix<T> Matrix<T>::operator+(const Matrix<T> &mat) const {
 
 template<class T>
 Matrix<T> Matrix<T>::operator-(Matrix<T> const &mat) const{
+    if (mat.m_col != this->m_col || mat.m_row != this->m_row){
+        throw SizeNotEqual(mat.size,this->size);
+    }
     T* a = this->data;
     T* b = mat.data;
     Matrix<T> res(this->m_col, this->m_row);
@@ -77,6 +85,9 @@ Matrix<T> Matrix<T>::scalarMultiplication(double const &k, Matrix<T> const &mat)
 
 template<class T>
 Matrix<T> Matrix<T>::scalarDivision(double const &k, Matrix<T> const &mat){
+    if (k == 0){
+        throw DivisorBeZero();
+    }
     T* a = mat.data;
     Matrix<T> res(mat.m_col, mat.m_row);
     T* ans = res.data;
@@ -106,12 +117,30 @@ Matrix<T> Matrix<T>::transposition(Matrix<T> const &mat){
 }
 
 template<class T>
-Matrix<T> Matrix<T>::conjugation(Matrix<T> const &mat){
-
+Matrix<T> Matrix<T>::conjugation(Matrix<T> const &mat) {
+    T *a;
+    Matrix<T> res(mat.m_row, mat.m_col);
+    T *ans = res.data;
+    for (int i = 0; i < mat.m_col; ++i) {
+        a = mat.data + i;
+        for (int j = 0; j < mat.m_row; j++) {
+            *ans = *a;
+            ans++;
+            a += mat.m_col;
+        }
+    }
+    T *ans1 = res.data;
+    for (int k = 0; k < res.size; ++k) {
+        *ans1 = conj(*ans1);
+        ans1++;
+    }
+    return res;
 }
-
 template<class T>
 Matrix<T> Matrix<T>::elementMultiplication(Matrix<T> const &mat_a, Matrix<T> const &mat_b){
+    if (mat_a.m_col != mat_b.m_col || mat_a.m_row != mat_b.m_row){
+        throw SizeNotEqual(mat_a.size,mat_b->size);
+    }
     T* a = mat_a.data;
     T* b = mat_b.data;
     Matrix<T> res(mat_a.m_col, mat_a.m_row);
@@ -127,6 +156,9 @@ Matrix<T> Matrix<T>::elementMultiplication(Matrix<T> const &mat_a, Matrix<T> con
 
 template<class T>
 Matrix<T> Matrix<T>::matrixMultiplication(Matrix<T> const &mat_a, Matrix<T> const &mat_b){
+    if (mat_a.m_col != mat_b.m_row){
+        throw SizeNotEqual(mat_a.size,mat_b->size);
+    }
     T* a = mat_a.data;
     T* b = mat_b.data;
     Matrix<T> res(mat_b.m_col, mat_a.m_row);
@@ -144,6 +176,12 @@ Matrix<T> Matrix<T>::matrixMultiplication(Matrix<T> const &mat_a, Matrix<T> cons
 
 template<class T>
 Matrix<T> Matrix<T>::vectorMultiplication(Matrix<T> const &mat_a, Matrix<T> const &vec){
+    if (vec.m_col != 1){
+        throw NotVector(vec.m_col);
+    }
+    if (mat_a.m_col != vec.m_row){
+        throw SizeNotEqual(mat_a.size,vec.size);
+    }
     T* a = mat_a.data;
     T* b = vec.data;
     Matrix<T> res(vec.m_col, mat_a.m_row);
@@ -161,6 +199,9 @@ Matrix<T> Matrix<T>::vectorMultiplication(Matrix<T> const &mat_a, Matrix<T> cons
 
 template<class T>
 Matrix<T> Matrix<T>::dotProduct(Matrix<T> const &mat_a, Matrix<T> const &mat_b){
+    if (mat_a.m_col != mat_b.m_col || mat_a.m_row != mat_b.m_row){
+        throw SizeNotEqual(mat_a.size,mat_b->size);
+    }
     T* a = mat_a.data;
     T* b = mat_b.data;
     Matrix<T> res(mat_a.m_col, mat_a.m_row);
@@ -176,6 +217,9 @@ Matrix<T> Matrix<T>::dotProduct(Matrix<T> const &mat_a, Matrix<T> const &mat_b){
 
 template<class T>
 Matrix<T> Matrix<T>::crossProduct(Matrix<T> const &mat_a, Matrix<T> const &mat_b){
+    if (mat_a.m_col != mat_b.m_row){
+        throw SizeNotEqual(mat_a.size,mat_b->size);
+    }
     T* a = mat_a.data;
     T* b = mat_b.data;
     Matrix<T> res(mat_b.m_col, mat_a.m_row);

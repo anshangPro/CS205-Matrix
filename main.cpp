@@ -4,7 +4,6 @@
 #include <iostream>
 #include "Matrix.h"
 #include "Matrix.cpp"
-#include <complex>
 using namespace std;
 int main(){
     int temp = 1;
@@ -21,7 +20,7 @@ int main(){
             b.set(j,i,temp1++);
         }
     }
-    Matrix<int> c = Matrix<int>::crossProduct(a,b);
+    Matrix<int> c = Matrix<int>::conjugation(a);
     a.print();
     cout<<endl;
     b.print();
@@ -36,7 +35,8 @@ int main(){
             complex1.imag(++temp);
         }
     }
-    Matrix<complex<double>> c = Matrix<complex<double>>::matrixMultiplication(a,a);
+    Matrix<complex<double>> c = Matrix<complex<double>>::conjugation(a);
+    a.print();
     cout<<endl;
     c.print();*/
     return 0;
