@@ -36,9 +36,9 @@ public:
 
     Matrix(Matrix<T> &&a) noexcept; // move constructor
 
-    Matrix<T> &operator=(Matrix<T> const &matrix); // copy assignment
+    Matrix<T> &operator=(Matrix<T> const &a); // copy assignment
 
-    Matrix<T> &operator=(Matrix<T> &&matrix) noexcept; // move assignment
+    Matrix<T> &operator=(Matrix<T> &&a) noexcept; // move assignment
 
     Matrix<T> operator+(Matrix<T> const &mat) const;
 
