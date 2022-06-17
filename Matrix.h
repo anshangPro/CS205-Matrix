@@ -7,6 +7,7 @@
 
 #include "Part4new.h"
 #include <malloc.h>
+#include <opencv2/opencv.hpp>
 
 #include <cstring>
 #include <iostream>
@@ -32,6 +33,8 @@ public:
 
   Matrix(size_t col, size_t row);
 
+  Matrix(const cv::Mat &mat); // 构造函数，将cv::Mat转换为Matrix
+
   Matrix(const Matrix<T> &a); // copy constructor
 
   Matrix(Matrix<T> &&a) noexcept; // move constructor
@@ -41,6 +44,8 @@ public:
   Matrix<T> &operator=(Matrix<T> &&a) noexcept; // move assignment
 
   Matrix<T> operator+(Matrix<T> const &mat) const;
+
+  cv::Mat toCvMat() const;
 
   T get(size_t col, size_t row) const;
 
@@ -76,6 +81,28 @@ public:
   ~Matrix();
 };
 
+template <class T> void Matrix<T>::print() const {
+  T *temp = data;
+  for (int i = 0; i < m_row; i++) {
+    for (int j = 0; j < m_col; j++) {
+      std::cout << *temp++ << '\t';
+    }
+    std::cout << std::endl;
+  }
+}
+
+template <class T>
+cv::Mat Matrix<T>::toCvMat() const {
+  cv::Mat mat(m_row, m_col, CV_32FC1);
+  T *temp = data;
+  for (int i = 0; i < m_row; i++) {
+    for (int j = 0; j < m_col; j++) {
+      mat.at<float>(i, j) = *temp++;
+    }
+  }
+  return mat;
+}
+
 template <class T> bool Matrix<T>::isValid(size_t col, size_t row) const {
   return col >= 0 && col < this->m_col && row >= 0 && row < this->m_row;
 }
@@ -94,6 +121,20 @@ Matrix<T>::Matrix(size_t col, size_t row)
   memset(this->data, 0, size * sizeof(T));
   // std::cout << "Matrix Allocated: " << this << " data_ptr:" << this->data
   //           << std::endl;
+}
+
+template <class T>
+Matrix<T>::Matrix(const cv::Mat &mat) {
+  this->m_col = mat.cols;
+  this->m_row = mat.rows;
+  this->size = this->m_col * this->m_row;
+  this->data = (T *)malloc(size * sizeof(T));
+  memset(this->data, 0, size * sizeof(T));
+  for (int i = 0; i < mat.rows; i++) {
+    for (int j = 0; j < mat.cols; j++) {
+      this->set(j, i, mat.at<float>(i, j));
+    }
+  }
 }
 
 template <class T> Matrix<T>::Matrix(const Matrix<T> &a) {
@@ -238,7 +279,7 @@ template <class T> Matrix<T> Matrix<T>::inverse() {
 template <class T> T Matrix<T>::getTrace() const {
   T *matrix = this.data;
   int n = this.m_col;
-  long long trace = 0;
+  T trace = 0;
   for (int i = 0; i < n; i++) {
     trace += matrix[i * n + i];
   }

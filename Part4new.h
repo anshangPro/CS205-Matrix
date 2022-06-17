@@ -12,7 +12,8 @@
 
 
 #define TEMPLATE_T template<class T>
-const double DBL_MIN = 1E-10;
+
+const double DBL_MIN1 = (1E-10);
 
 template<typename>
 struct __isComplex : public std::false_type {
@@ -243,7 +244,7 @@ SMatrix<T> matrixGramSchimidt(const SMatrix<T> &src) {
 
 TEMPLATE_T
 SMatrix<T> matrixInverse(const SMatrix<T> &src) {
-    if (std::abs(matrixDeterminant(src)) <= DBL_MIN) {
+    if (std::abs(matrixDeterminant(src)) <= DBL_MIN1) {
         throw std::runtime_error("matrix is not invertible");
     }
     const size_t size = src.size;
@@ -251,10 +252,10 @@ SMatrix<T> matrixInverse(const SMatrix<T> &src) {
 
     T tempTimes = 0;
     for (int i = 0; i < size; i++) {
-        if (std::abs(AugmentedMatrix[i][i]) <= DBL_MIN) {
+        if (std::abs(AugmentedMatrix[i][i]) <= DBL_MIN1) {
             int j;
             for (j = i + 1; j < size; j++) {
-                if (std::abs(AugmentedMatrix[j][i]) > DBL_MIN) {
+                if (std::abs(AugmentedMatrix[j][i]) > DBL_MIN1) {
                     break;
                 }
             }
@@ -269,7 +270,7 @@ SMatrix<T> matrixInverse(const SMatrix<T> &src) {
         }
 
         for (int j = i + 1; j < size; j++) {
-            if (std::abs(AugmentedMatrix[j][i]) > DBL_MIN) {
+            if (std::abs(AugmentedMatrix[j][i]) > DBL_MIN1) {
                 tempTimes = (AugmentedMatrix[j][i]) / AugmentedMatrix[i][i];
                 for (int k = i; k < size * 2; k++) {
                     AugmentedMatrix[j][k] /= tempTimes;
@@ -281,7 +282,7 @@ SMatrix<T> matrixInverse(const SMatrix<T> &src) {
 
     for (int i = 0; i < size; i++) {
         for (int j = i + 1; j < size * 2 / 2.; j++) {
-            if (std::abs(AugmentedMatrix[i][j]) > DBL_MIN) {
+            if (std::abs(AugmentedMatrix[i][j]) > DBL_MIN1) {
                 tempTimes = AugmentedMatrix[i][j] / AugmentedMatrix[j][j];
                 for (int k = j; k < size * 2; k++) {
                     AugmentedMatrix[i][k] -= tempTimes * AugmentedMatrix[j][k];
