@@ -51,6 +51,10 @@ public:
 
   T *getData() const;
 
+  size_t getCol() const;
+
+  size_t getRow() const;
+
   void set(size_t col, size_t row, T value) const;
 
   void print() const;
@@ -200,6 +204,10 @@ template <class T> Matrix<T> Matrix<T>::operator+(const Matrix<T> &mat) const {
   return res;
 }
 
+template <class T> size_t Matrix<T>::getCol() const { return m_col; }
+
+template <class T> size_t Matrix<T>::getRow() const { return m_row; }
+
 template <class T> Matrix<T>::~Matrix() {
   delete (this->data);
   this->data = nullptr;
@@ -293,8 +301,8 @@ template <class T> T Matrix<T>::getTrace() const {
   if (this->m_col != this->m_row) {
     throw NotSquareMatrix(this->m_col, this->m_row);
   }
-  T *matrix = this.data;
-  int n = this.m_col;
+  T *matrix = this->data;
+  int n = this->m_col;
   T trace = 0;
   for (int i = 0; i < n; i++) {
     trace += matrix[i * n + i];
@@ -306,8 +314,8 @@ template <class T> T Matrix<T>::getDeterminant() const {
   if (this->m_col != this->m_row) {
     throw NotSquareMatrix(this->m_col, this->m_row);
   }
-  T *matrix = this.data;
-  int n = this.m_col;
+  T *matrix = this->data;
+  int n = this->m_col;
   T det = 0;
   T *submatrix = new T[(n - 1) * (n - 1)];
   if (n == 2) {
@@ -328,6 +336,7 @@ template <class T> T Matrix<T>::getDeterminant() const {
       }
     }
   }
+  return det;
 }
 
 template <class T>
