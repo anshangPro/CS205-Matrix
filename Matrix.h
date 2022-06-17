@@ -91,8 +91,7 @@ template <class T> void Matrix<T>::print() const {
   }
 }
 
-template <class T>
-cv::Mat Matrix<T>::toCvMat() const {
+template <class T> cv::Mat Matrix<T>::toCvMat() const {
   cv::Mat mat(m_row, m_col, CV_32FC1);
   T *temp = data;
   for (int i = 0; i < m_row; i++) {
@@ -123,8 +122,7 @@ Matrix<T>::Matrix(size_t col, size_t row)
   //           << std::endl;
 }
 
-template <class T>
-Matrix<T>::Matrix(const cv::Mat &mat) {
+template <class T> Matrix<T>::Matrix(const cv::Mat &mat) {
   this->m_col = mat.cols;
   this->m_row = mat.rows;
   this->size = this->m_col * this->m_row;
@@ -229,6 +227,9 @@ template <class T> void Matrix<T>::reshape(size_t col, size_t row) {
 }
 
 template <class T> Matrix<T> Matrix<T>::eigenValue() {
+  if (this->m_col != this->m_row) {
+    throw NotSquareMatrix(this->m_col, this->m_row);
+  }
   SMatrix<T> A(this->data, this->m_col);
   auto eigValue = matrixEigValue(A, 1000);
   Matrix<T> res(eigValue.size, 1);
@@ -239,6 +240,9 @@ template <class T> Matrix<T> Matrix<T>::eigenValue() {
 }
 
 template <class T> Matrix<T> Matrix<T>::eigenValue(int times) {
+  if (this->m_col != this->m_row) {
+    throw NotSquareMatrix(this->m_col, this->m_row);
+  }
   SMatrix<T> A(this->data, this->m_col);
   auto eigValue = matrixEigValue(A, times);
   Matrix<T> res(eigValue.size, 1);
@@ -249,6 +253,9 @@ template <class T> Matrix<T> Matrix<T>::eigenValue(int times) {
 }
 
 template <class T> Matrix<T> Matrix<T>::eigenVector() {
+  if (this->m_col != this->m_row) {
+    throw NotSquareMatrix(this->m_col, this->m_row);
+  }
   SMatrix<T> A(this->data, this->m_col);
   auto eigValue = matrixEigValue(A, 1000);
   auto eigVector = matrixEigVector(A, eigValue, 1000);
@@ -259,6 +266,9 @@ template <class T> Matrix<T> Matrix<T>::eigenVector() {
 }
 
 template <class T> Matrix<T> Matrix<T>::eigenVector(int times) {
+  if (this->m_col != this->m_row) {
+    throw NotSquareMatrix(this->m_col, this->m_row);
+  }
   SMatrix<T> A(this->data, this->m_col);
   auto eigValue = matrixEigValue(A, times);
   auto eigVector = matrixEigVector(A, eigValue, times);
@@ -269,6 +279,9 @@ template <class T> Matrix<T> Matrix<T>::eigenVector(int times) {
 }
 
 template <class T> Matrix<T> Matrix<T>::inverse() {
+  if (this->m_col != this->m_row) {
+    throw NotSquareMatrix(this->m_col, this->m_row);
+  }
   SMatrix<T> A(this->data, this->m_col);
   auto inv = matrixInverse(A);
   Matrix<T> res(inv.size, inv.size);
@@ -277,6 +290,9 @@ template <class T> Matrix<T> Matrix<T>::inverse() {
 }
 
 template <class T> T Matrix<T>::getTrace() const {
+  if (this->m_col != this->m_row) {
+    throw NotSquareMatrix(this->m_col, this->m_row);
+  }
   T *matrix = this.data;
   int n = this.m_col;
   T trace = 0;
@@ -287,6 +303,9 @@ template <class T> T Matrix<T>::getTrace() const {
 }
 
 template <class T> T Matrix<T>::getDeterminant() const {
+  if (this->m_col != this->m_row) {
+    throw NotSquareMatrix(this->m_col, this->m_row);
+  }
   T *matrix = this.data;
   int n = this.m_col;
   T det = 0;
