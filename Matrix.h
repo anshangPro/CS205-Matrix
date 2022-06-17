@@ -216,18 +216,24 @@ Matrix<T> Matrix<T>::eigenValue(int times) {
   }
   return res;
 }
+
 template <class T> 
 Matrix<T> Matrix<T>::eigenVector() {
   SMatrix<T> A(this->data, this->m_col);
   auto eigValue = matrixEigValue(A, 1000);
   auto eigVector = matrixEigVector(A, eigValue, 1000);
   Matrix<T> res(eigVector.size, eigVector.size);
-  //memcpy(res.data, eigVector.data.get(), eigVector.size * sizeof(T));
-  for (int i = 0; i < eigVector.size; i++) {
-    for (int j = 0; j < eigVector.size; j++) {
-      res.set(i, j, eigVector[i][j]);
-    }
-  }
+  memcpy(res.data, eigVector.data.get(), eigVector.size*eigVector.size * sizeof(T));
+  return res;
+}
+
+template <class T> 
+Matrix<T> Matrix<T>::eigenVector(int times) {
+  SMatrix<T> A(this->data, this->m_col);
+  auto eigValue = matrixEigValue(A, times);
+  auto eigVector = matrixEigVector(A, eigValue, times);
+  Matrix<T> res(eigVector.size, eigVector.size);
+  memcpy(res.data, eigVector.data.get(), eigVector.size*eigVector.size * sizeof(T));
   return res;
 }
 
