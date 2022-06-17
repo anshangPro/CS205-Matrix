@@ -12,16 +12,18 @@
 #include <iostream>
 
 #include "IndexOutOfBound.h"
+#include "NotSquareMatrix.h"
 #include "SizeNotEqual.h"
 
 template <class T> class Matrix {
 
 private:
-  // std::unique_ptr<T[]> data;
   T *data;
   size_t size;
   size_t m_col, m_row;
+
   bool isValid(size_t col, size_t row) const;
+
   bool isValid(size_t col_begin, size_t col_end, size_t row_begin,
                size_t row_end) const;
 
@@ -34,9 +36,9 @@ public:
 
   Matrix(Matrix<T> &&a) noexcept; // move constructor
 
-  Matrix<T> &operator=(Matrix<T> &matrix); // copy assignment
+  Matrix<T> &operator=(Matrix<T> const &a); // copy assignment
 
-  Matrix<T> &operator=(Matrix<T> &&matrix) noexcept; // move assignment
+  Matrix<T> &operator=(Matrix<T> &&a) noexcept; // move assignment
 
   Matrix<T> operator+(Matrix<T> const &mat) const;
 
@@ -95,17 +97,18 @@ Matrix<T>::Matrix(size_t col, size_t row)
 }
 
 template <class T> Matrix<T>::Matrix(const Matrix<T> &a) {
-  std::cout << "Matrix Copy Constructor from:" << &a << " to:" << this
-            << std::endl;
+  //    std::cout << "Matrix Copy Constructor from:" << &a << " to:" << this
+  //              << std::endl;
   this->m_col = a.m_col;
   this->m_row = a.m_row;
   this->size = a.size;
   this->data = (T *)malloc(size * sizeof(T));
   memcpy(this->data, a.data, size * sizeof(T));
 }
+
 template <class T> Matrix<T>::Matrix(Matrix<T> &&a) noexcept {
-  std::cout << "Matrix Move Constructor from:" << &a << " to:" << this
-            << std::endl;
+  //    std::cout << "Matrix Move Constructor from:" << &a << " to:" << this
+  //              << std::endl;
   if (&a != this) {
     this->m_col = a.m_col;
     this->m_row = a.m_row;
@@ -115,10 +118,10 @@ template <class T> Matrix<T>::Matrix(Matrix<T> &&a) noexcept {
   }
 }
 
-template <class T> Matrix<T> &Matrix<T>::operator=(Matrix<T> &a) {
+template <class T> Matrix<T> &Matrix<T>::operator=(Matrix<T> const &a) {
   // copy assignment
-  std::cout << "Matrix Copy Assignment from:" << &a << " to:" << this
-            << std::endl;
+  if (a == this)
+    return *this;
   this->~Matrix();
   this->m_col = a.m_col;
   this->m_row = a.m_row;
@@ -130,8 +133,8 @@ template <class T> Matrix<T> &Matrix<T>::operator=(Matrix<T> &a) {
 
 template <class T> Matrix<T> &Matrix<T>::operator=(Matrix<T> &&a) noexcept {
   // copy assignment
-  std::cout << "Matrix Move Assignment from:" << &a << " to:" << this
-            << std::endl;
+  //    std::cout << "Matrix Move Assignment from:" << &a << " to:" << this
+  //              << std::endl;
   if (&a != this) {
     this->~Matrix();
     this->m_col = a.m_col;
@@ -159,8 +162,6 @@ template <class T> Matrix<T> Matrix<T>::operator+(const Matrix<T> &mat) const {
 }
 
 template <class T> Matrix<T>::~Matrix() {
-  // std::cout << "Matrix Destructor:" << this << " data_ptr:" << this->data
-  //           << std::endl;
   delete (this->data);
   this->data = nullptr;
 }
@@ -177,16 +178,6 @@ template <class T> void Matrix<T>::set(size_t col, size_t row, T value) const {
   if (!isValid(col, row))
     throw IndexOutOfBound(col, row);
   *(data + row * this->m_col + col) = value;
-}
-
-template <class T> void Matrix<T>::print() const {
-  T *temp = data;
-  for (int i = 0; i < m_row; i++) {
-    for (int j = 0; j < m_col; j++) {
-      std::cout << *temp++ << '\t';
-    }
-    std::cout << std::endl;
-  }
 }
 
 template <class T> void Matrix<T>::reshape(size_t col, size_t row) {
@@ -235,12 +226,12 @@ template <class T> Matrix<T> Matrix<T>::eigenVector(int times) {
          eigVector.size * eigVector.size * sizeof(T));
   return res;
 }
-template <class T> Matrix<T> Matrix<T>::inverse(){
+
+template <class T> Matrix<T> Matrix<T>::inverse() {
   SMatrix<T> A(this->data, this->m_col);
   auto inv = matrixInverse(A);
   Matrix<T> res(inv.size, inv.size);
-  memcpy(res.data, inv.data.get(),
-         inv.size * inv.size * sizeof(T));
+  memcpy(res.data, inv.data.get(), inv.size * inv.size * sizeof(T));
   return res;
 }
 
@@ -258,10 +249,10 @@ template <class T> T Matrix<T>::getDeterminant() const {
   T *matrix = this.data;
   int n = this.m_col;
   T det = 0;
-  T* submatrix = new T[(n - 1) * (n - 1)];
-  if (n == 2)
+  T *submatrix = new T[(n - 1) * (n - 1)];
+  if (n == 2) {
     return ((matrix[0] * matrix[3]) - (matrix[2] * matrix[1]));
-  else {
+  } else {
     for (int x = 0; x < n; x++) {
       int subi = 0;
       for (int i = 1; i < n; i++) {
@@ -273,12 +264,10 @@ template <class T> T Matrix<T>::getDeterminant() const {
           submatrix[subi * (n - 1) + subj] = matrix[i * n + j];
           subj++;
         }
-        subi++;
+        std::cout << std::endl;
       }
-      det = det + (pow(-1, x) * matrix[x] * determinant(submatrix, n - 1));
     }
   }
-  return det;
 }
 
 template <class T>
