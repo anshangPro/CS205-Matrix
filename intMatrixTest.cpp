@@ -261,7 +261,7 @@ void testcase24() {
   auto matrixSrc1 = initial(2, 2, a);
   auto matrixSrc2 = initial(2, 3, b);
   auto matrixRes1 = initial(2, 2, d);
-  assertEquales(2, -100, matrixSrc1.getDeterminant());
+  assertEquales(24, -100, matrixSrc1.getDeterminant());
 }
 void testcase25() {
   cout << "This is the test for reshape" << endl;
