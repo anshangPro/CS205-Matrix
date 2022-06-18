@@ -27,8 +27,8 @@ void assertEquales(int num, const Matrix<T> &a, const cv::Mat &b) {
     printFailure(num, "Matrix size not equal");
     return;
   }
-  for (int i = 0; i < a.getRow(); i++) {
-    for (int j = 0; j < a.getCol(); j++) {
+  for (int i = 0; i < a.getCol(); i++) {
+    for (int j = 0; j < a.getRow(); j++) {
       if (abs(a.get(i, j) - b.at<T>(i, j)) > MIN_DOUBLE) {
         printFailure(num, "Matrix value not equal");
         return;
