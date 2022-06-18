@@ -45,17 +45,26 @@
 
 ​	We set a new class named `SMatrix`, which represents a square matrix that only the square matrix supports the operations, so we will throw an exception which represent the matrix is not a square matrix.
 ​	The realization of this part is mainly depend on the `unique_ptr` and the overriding of `operator[]` which enables us to use the `SMatrix` the same as a `2-d array`, for example, we can use `SMatrix[1] [1]` to get the data at the point (1,1). So we can get the needed data in a much easier way. Also, the `unique_ptr` enables us to use it in the smarter way that it will automatically release the memory pointed by it when we finish the use of it.
-​	The calculation in this part follows the principle of linear algebra. We just do what we have done in our freshman year. We 
+​	The calculation in this part follows the principle of linear algebra. We just do what we have done in our freshman year. We first augment it to a `augmented matrix` and then we do `Gram-Schimidt orthogonalization` to it to get the left part of the matrix to an `eye matrix` so we get the `eigenvalues and eigenvectors` in the right part.  
 
+### Traces, Inverse and Determinant
 
+​	They are used in the above part, so it maybe much easy for us to get them down. We also takes what we learned in linear algebra and written them down on the paper, the rest work is translate the process into the `cpp` language that can do the job for computers.
 
+### Reshape
 
+When storing the data of matrix, we use a pointer to allocate a connected space to store all the data so that the reshape is easy for us. We first do a check on whether the reshape size is equal to the previous one, If unmatched, then throw a exception. Else, we change the col and row definition.
 
 ### Convolution
 ​	As for convolution, we first extend the matrix the matrix size by kernel size. Then use the up-left center of kernel as the convolution kernel to do the calculation.
 
-### Reshape
-When storing the data of matrix, we use a pointer to allocate a connected space to store all the data so that the reshape is easy for us. We first do a check on whether the reshape size is equal to the previous one, If unmatched, then throw a exception. Else, we change the col and row definition.
+### Transformation with opencv
+
+​	Firstly, we provides a constructor that receives a `opencv matrix` to return `Matrix` object, also, we provide a `toOpenCV` function, which returns an `opencv` object matrix with the same value of the current matrix.
+
+ 
+
+
 
 
 
