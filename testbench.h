@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <opencv2/opencv.hpp>
-#include <eigen3/Eigen/Dense>
 
 #include "Matrix.h"
 #include "NotSquareMatrix.h"
@@ -83,8 +82,7 @@ template <typename T> void testNotSquareMatrix(int num, int n, Matrix<T> a) {
   }
 }
 
-template <typename T>
-void 
+
 
 
 #endif // TESTBENCH_H
