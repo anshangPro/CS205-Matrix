@@ -8,9 +8,19 @@
 
 ### Overall introduction:
 
+```c++
+Matrix<T> eigenValue();
+
+    Matrix<T> eigenValue(int times);
+
+    Matrix<T> eigenVector();
+
+    Matrix<T> eigenVector(int times);
+```
+
 ​	Our code realize the `Matrix` class using `template` definition. So we can change the type we passing to the `class` and construct the needed type of matrix. We can using the `Matrix<T>` to realize the function of the numeric types. 
 
-​	The storage of our data of the matrix using a pointer to point to the start address of the data and we provide the get and set function for the user to get the needed data in the `(row,clo)`. Hence, we add some functions and exceptions for users to test the data validation.
+​	The storage of our data of the matrix using a pointer to point to the start address of the data and we provide the get and set function for the user to get the needed data in the `(row,col)`. Hence, we add some functions and exceptions for users to test the data validation.
 
 ### Constructor:
 
@@ -53,6 +63,18 @@
 
   In this function, if you divide the matrix by 0, it will throw a exception. After checking it, it will return a matrix after division based in your type.
 
+### Arithmetic reduction operations
+
+For all four operation, we support two kind of function overloading. If we only get one paramater, we will do operation on the whole matrix. Otherwise, we will do on the submatrix.
+
+```c++
+template<class T>
+T getXXX(Matrix<T> mat);
+
+template<class T>
+T getXXX(Matrix<T> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end);
+```
+
 ### Eigenvalues and Eigenvectors
 
 ​	We set a new class named `SMatrix`, which represents a square matrix that only the square matrix supports the operations, so we will throw an exception which represent the matrix is not a square matrix.
@@ -66,6 +88,10 @@
 ### Reshape
 
 When storing the data of matrix, we use a pointer to allocate a connected space to store all the data so that the reshape is easy for us. We first do a check on whether the reshape size is equal to the previous one, If unmatched, then throw a exception. Else, we change the col and row definition.
+
+### Slicing
+
+The function return value is the matrix after slicing while the original matrix keeps not change. We give check on the size and support exception throwing.
 
 ### Convolution
 ​	As for convolution, we first extend the matrix the matrix size by kernel size. Then use the up-left center of kernel as the convolution kernel to do the calculation.

@@ -48,7 +48,7 @@ public:
 
     Matrix<T> operator+(Matrix<T> const &mat) const;
 
-    Matrix operator-(Matrix const &mat) const;
+    Matrix<T> operator-(Matrix const &mat) const;
 
     static Matrix scalarMultiplication(double const &k, Matrix const &mat);
 
