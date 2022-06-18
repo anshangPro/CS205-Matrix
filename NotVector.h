@@ -16,7 +16,7 @@ public:
 
     const char* what() const noexcept override{
         char* info = new char[100];
-        sprintf(info, "This is not a vector", col);
+        sprintf(info, "This is not a vector, column is %zu", col);
         return info;
     }
 };

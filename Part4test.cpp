@@ -9,20 +9,22 @@
 using namespace std;
 
 int main() {
-    auto *A = new complex<double>[3 * 3];
+    auto *A = new double[3 * 3];
     // 1 2 2 2 1 2 1 2 1
-    A[0] = 1.0 + 2i;
-    A[1] = 2.0 + 2i;
-    A[2] = 2;
-    A[3] = 2;
-    A[4] = 1;
-    A[5] = 2;
-    A[6] = 1;
-    A[7] = 2;
-    A[8] = 1;
-    auto *Q = new complex<double>[3 * 3];
-    auto *R = new complex<double>[3 * 3];
-    QRBreakDown(A, 3, Q, R);
+    A[0] = 12;
+    A[1] = 22;
+    A[2] = 32;
+    A[3] = 4;
+    A[4] = 25;
+    A[5] = 6;
+    A[6] = 7;
+    A[7] = 8;
+    A[8] = 9;
+    auto *Q = new double[3 * 3];
+    auto *R = new double[3 * 3];
+    //QRBreakDown(A, 3, Q, R);
+    JacbiCor(A, 3, Q, R, 0.00001, 100);
+    cout<<determinant(A, 3)<<endl;
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             cout << Q[i * 3 + j] << " ";
