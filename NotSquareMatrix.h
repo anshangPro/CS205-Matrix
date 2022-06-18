@@ -1,6 +1,5 @@
-//
-// Created by ay871 on 2022/6/6.
-//
+#ifndef NOTSQUAREMATRIX_H
+#define NOTSQUAREMATRIX_H
 #include <exception>
 #include <cstdio>
 
@@ -17,3 +16,5 @@ public:
         return info;
     }
 };
+
+#endif //NOTSQUAREMATRIX_H
