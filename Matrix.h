@@ -19,7 +19,7 @@
 #include "NotVector.h"
 #include "ColRowNotMatch.h"
 
-template<class T>
+template<typename T>
 class Matrix {
 
 private:
@@ -660,6 +660,115 @@ Matrix<T> initial(size_t col, size_t row, T data[]){
         }
     }
     return res;
+}
+
+template<class T>
+T getMax(Matrix<T> &mat) {
+    T max = mat.get(0, 0);
+    for(int i = 0; i < mat.getCol(); i++){
+        for(int j = 0; j < mat.getRow(); j++) {
+            if (max < mat.get(i, j)) max = mat.get(i, j);
+        }
+    }
+    return max;
+}
+
+template<class T>
+T getMin(Matrix<T> &mat) {
+    T min = mat.get(0, 0);
+    for(int i = 0; i < mat.getCol(); i++){
+        for(int j = 0; j < mat.getRow(); j++) {
+            if (min > mat.get(i, j)) min = mat.get(i, j);
+        }
+    }
+    return min;
+}
+
+template<class T>
+std::complex<T> getMax(Matrix<std::complex<T>> &mat) {
+    std::complex<T> max = mat.get(0, 0);
+    for(int i = 0; i < mat.getCol(); i++){
+        for(int j = 0; j < mat.getRow(); j++) {
+            if (abs(max) < abs(mat.get(i, j))) max = mat.get(i, j);
+        }
+    }
+    return max;
+}
+
+template<class T>
+std::complex<T> getMin(Matrix<std::complex<T>> &mat) {
+    std::complex<T> min = mat.get(0, 0);
+    for(int i = 0; i < mat.getCol(); i++){
+        for(int j = 0; j < mat.getRow(); j++) {
+            if (abs(min) > abs(mat.get(i, j))) min = mat.get(i, j);
+        }
+    }
+    return min;
+}
+
+template<class T>
+T getAvg(Matrix<T> mat)  {
+    return getSum(mat) / (mat.getRow() * mat.getCol());
+}
+
+template<class T>
+std::complex<T> getAvg(Matrix<std::complex<T>> mat)  {
+    return getSum(mat) / std::complex<T>(mat.getRow() * mat.getCol(), 0);
+}
+
+template<class T>
+T getSum(Matrix<T> mat) {
+    T sum = 0;
+    for(int i = 0; i < mat.getCol(); i++){
+        for(int j = 0; j < mat.getRow(); j++) {
+            sum += mat.get(i, j);
+        }
+    }
+    return sum;
+}
+
+template<class T>
+T getMax(Matrix<T> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
+    return getMax(mat.slicing(col_begin, col_end, row_begin, row_end));
+}
+
+template<class T>
+T getMin(Matrix<T> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
+    return getMin(mat.slicing(col_begin, col_end, row_begin, row_end));
+}
+
+template<class T>
+T getAvg(Matrix<T> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
+    return getAvg(mat.slicing(col_begin, col_end, row_begin, row_end));
+}
+
+template<class T>
+T getSum(Matrix<T> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
+    return getSum(mat.slicing(col_begin, col_end, row_begin, row_end));
+}
+
+template<class T>
+std::complex<T> getMax(Matrix<std::complex<T>> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
+    Matrix<std::complex<T>> temp = mat.slicing(col_begin, col_end, row_begin, row_end);
+    return getMax(temp);
+}
+
+template<class T>
+std::complex<T> getMin(Matrix<std::complex<T>> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
+    Matrix<std::complex<T>> temp = mat.slicing(col_begin, col_end, row_begin, row_end);
+    return getMin(temp);
+}
+
+template<class T>
+std::complex<T> getAvg(Matrix<std::complex<T>> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
+    Matrix<std::complex<T>> temp = mat.slicing(col_begin, col_end, row_begin, row_end);
+    return getAvg(temp);
+}
+
+template<class T>
+std::complex<T> getSum(Matrix<std::complex<T>> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
+    Matrix<std::complex<T>> temp = mat.slicing(col_begin, col_end, row_begin, row_end);
+    return getSum(temp);
 }
 
 #endif  // MATRIX_MATRIX_H
