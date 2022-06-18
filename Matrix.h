@@ -590,11 +590,11 @@ Matrix<T> Matrix<T>::matrixMultiplication(Matrix<T> const &mat_a, Matrix<T> cons
 
 template<class T>
 Matrix<T> Matrix<T>::vectorMultiplication(Matrix<T> const &mat_a, Matrix<T> const &vec) {
-    if (vec.m_col != 1) {
+    if (vec.m_col != 1 || vec.m_row <= 0) {
         throw NotVector(vec.m_col);
     }
     if (mat_a.m_col != vec.m_row) {
-        throw ColRowNotMatch(mat_a.size, vec.size);
+        throw ColRowNotMatch(mat_a.m_col, vec.m_row);
     }
     T *a = mat_a.data;
     T *b = vec.data;
@@ -614,7 +614,7 @@ Matrix<T> Matrix<T>::vectorMultiplication(Matrix<T> const &mat_a, Matrix<T> cons
 template<class T>
 Matrix<T> Matrix<T>::dotProduct(Matrix<T> const &mat_a, Matrix<T> const &mat_b) {
     if (mat_a.m_col != mat_b.m_col || mat_a.m_row != mat_b.m_row) {
-        throw ColRowNotMatch(mat_a.m_col, mat_b.m_row);
+        throw ColRowNotMatch(mat_a.m_row, mat_a.m_col, mat_b.m_row, mat_b.m_col);
     }
     T *a = mat_a.data;
     T *b = mat_b.data;
