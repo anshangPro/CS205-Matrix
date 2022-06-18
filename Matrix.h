@@ -728,45 +728,25 @@ T getSum(Matrix<T> mat) {
 
 template<class T>
 T getMax(Matrix<T> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
-    return getMax(mat.slicing(col_begin, col_end, row_begin, row_end));
-}
-
-template<class T>
-T getMin(Matrix<T> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
-    return getMin(mat.slicing(col_begin, col_end, row_begin, row_end));
-}
-
-template<class T>
-T getAvg(Matrix<T> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
-    return getAvg(mat.slicing(col_begin, col_end, row_begin, row_end));
-}
-
-template<class T>
-T getSum(Matrix<T> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
-    return getSum(mat.slicing(col_begin, col_end, row_begin, row_end));
-}
-
-template<class T>
-std::complex<T> getMax(Matrix<std::complex<T>> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
-    Matrix<std::complex<T>> temp = mat.slicing(col_begin, col_end, row_begin, row_end);
+    Matrix<T> temp = mat.slicing(col_begin, col_end, row_begin, row_end);
     return getMax(temp);
 }
 
 template<class T>
-std::complex<T> getMin(Matrix<std::complex<T>> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
-    Matrix<std::complex<T>> temp = mat.slicing(col_begin, col_end, row_begin, row_end);
+T getMin(Matrix<T> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
+    Matrix<T> temp = mat.slicing(col_begin, col_end, row_begin, row_end);
     return getMin(temp);
 }
 
 template<class T>
-std::complex<T> getAvg(Matrix<std::complex<T>> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
-    Matrix<std::complex<T>> temp = mat.slicing(col_begin, col_end, row_begin, row_end);
+T getAvg(Matrix<T> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
+    Matrix<T> temp = mat.slicing(col_begin, col_end, row_begin, row_end);
     return getAvg(temp);
 }
 
 template<class T>
-std::complex<T> getSum(Matrix<std::complex<T>> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
-    Matrix<std::complex<T>> temp = mat.slicing(col_begin, col_end, row_begin, row_end);
+T getSum(Matrix<T> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) {
+    Matrix<T> temp = mat.slicing(col_begin, col_end, row_begin, row_end);
     return getSum(temp);
 }
 

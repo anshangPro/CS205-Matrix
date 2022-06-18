@@ -15,7 +15,6 @@ int main(){
             a.set(j, i, temp++);
         }
     }
-    cout << getMin(a, 1, 1, 0, 3) << endl;
     Matrix<std::complex<double>> core(3, 3);
     core.set(0, 0, -1);
     core.set(1, 0, -2);
@@ -51,5 +50,14 @@ int main(){
         cout << e.what() << endl;
     }
 
+    Matrix<double> mat(4,4);
+    temp = 1;
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+            mat.set(j, i, temp++);
+        }
+    }
+    mat.print();
+    cout << getMax(mat, 1, 2, 1, 2) << endl;
     return 0;
 }
