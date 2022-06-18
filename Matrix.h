@@ -254,7 +254,6 @@ Matrix<T> Matrix<T>::operator-(Matrix<T> const &mat) const {
     return res;
 }
 
-
 template<class T>
 size_t Matrix<T>::getCol() const { return m_col; }
 
