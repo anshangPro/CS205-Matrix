@@ -38,6 +38,31 @@ void assertEquales(int num, const Matrix<T> &a, const cv::Mat &b) {
   printSuccess(num);
 }
 
+template <typename T>
+void assertEquales(int num, const Matrix<T> &a, const Matrix<T> &b) {
+  if (a.getRow() != b.getRow() || a.getCol() != b.getCol()) {
+    printFailure(num, "Matrix size not equal");
+    return;
+  }
+  for (int i = 0; i < a.getCol(); i++) {
+    for (int j = 0; j < a.getRow(); j++) {
+      if (abs(a.get(i, j) - b.get(i, j)) > MIN_DOUBLE) {
+        printFailure(num, "Matrix value not equal");
+        return;
+      }
+    }
+  }
+  printSuccess(num);
+}
+
+template <typename T1, typename T2> void assertEquales(int num, T1 a, T2 b) {
+  if (abs(a - b) > MIN_DOUBLE) {
+    printFailure(num, "Matrix value not equal");
+    return;
+  }
+  printSuccess(num);
+}
+
 //通过int指示测试哪一个函数
 // 1： eigenValue()
 // 2： eigenValue(int)
@@ -72,6 +97,7 @@ template <typename T> void testNotSquareMatrix(int num, int n, Matrix<T> a) {
       break;
     default:
       break;
+      printFailure(num,"not catch");
     }
   } catch (NotSquareMatrix e) {
     printSuccess(num, "NotSquareMatrix Exception");
@@ -81,8 +107,5 @@ template <typename T> void testNotSquareMatrix(int num, int n, Matrix<T> a) {
     return;
   }
 }
-
-
-
 
 #endif // TESTBENCH_H
