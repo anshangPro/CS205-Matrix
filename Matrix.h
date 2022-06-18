@@ -33,7 +33,7 @@ public:
 
   Matrix(size_t col, size_t row);
 
-  Matrix(const cv::Mat &mat); // 构造函数，将cv::Mat转换为Matrix
+  explicit Matrix(const cv::Mat &mat); // 构造函数，将cv::Mat转换为Matrix
 
   Matrix(const Matrix<T> &a); // copy constructor
 
@@ -190,7 +190,7 @@ template <class T> Matrix<T> &Matrix<T>::operator=(Matrix<T> &&a) noexcept {
 }
 
 template <class T> Matrix<T> Matrix<T>::operator+(const Matrix<T> &mat) const {
-  std::cout << "Matrix add " << this << " " << &mat << std::endl;
+//  std::cout << "Matrix add " << this << " " << &mat << std::endl;
   T *a = this->data;
   T *b = mat.data;
   Matrix<T> res(this->m_col, this->m_row);
@@ -359,7 +359,7 @@ Matrix<T> Matrix<T>::slicing(size_t col_begin, size_t col_end, size_t row_begin,
 template <class T>
 Matrix<T>
 Matrix<T>::convolution(const Matrix<T> &a,
-                       const Matrix<T> &kernel) { // need square and odd kernel
+                       const Matrix<T> &kernel) {
   Matrix<T> extended(a.m_col + kernel.m_col - 1, a.m_row + kernel.m_row - 1);
   T *p_e =
       extended.data + extended.m_row * (kernel.m_row / 2) + kernel.m_col / 2;
