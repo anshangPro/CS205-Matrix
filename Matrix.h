@@ -645,4 +645,16 @@ Matrix<T> Matrix<T>::crossProduct(Matrix<T> const &mat_a, Matrix<T> const &mat_b
     return res;
 }
 
+template<class T>
+Matrix<T> initial(size_t col, size_t row, T data[]){
+    Matrix<T> res(col, row);
+    size_t temp = 0;
+    for(int i = 0; i < row; i++){
+        for(int j = 0; j < col; j++){
+            res.set(j, i, data[temp++]);
+        }
+    }
+    return res;
+}
+
 #endif  // MATRIX_MATRIX_H

@@ -146,45 +146,6 @@ T vectorDotProduct(const T *src1, const T *src2, const size_t size) {
   return ret;
 }
 
-// TODO: Support complex numbers
-// TEMPLATE_T
-// std::complex<T> vectorDotProduct(const std::complex<T> * src1, const
-// std::complex<T> * src2, const size_t size) {
-//    std::complex<T> ret = 0;
-//    for(size_t i = 0; i < size; i++) {
-//        ret += src1[i] * src2[i];
-//    }
-//    return ret;
-//}
-
-std::unique_ptr<int[]> arrayIndexAuto(const int len) {
-  std::unique_ptr<int[]> ret(new int[len]);
-  for (int i = 0; i < len; i++) {
-    ret[i] = i;
-  }
-  return ret;
-}
-
-std::unique_ptr<int[]> arrayIndexAuto(const int start, const int end) {
-  std::unique_ptr<int[]> ret(new int[end - start]);
-  for (int i = 0; i < end - start; i++) {
-    ret[i] = i + start;
-  }
-  return ret;
-}
-
-TEMPLATE_T
-SMatrix<T> matrixRowRearrange(const SMatrix<T> &src,
-                              const std::unique_ptr<int[]> &index) {
-  SMatrix<T> ret(src.size);
-  for (size_t i = 0; i < src.size; i++) {
-    // source row: src[index[i]]
-    // target row: ret[i]
-    memcpy(ret[i], src[index[i]], sizeof(T) * src.size);
-  }
-  return ret;
-}
-
 TEMPLATE_T
 T matrixDeterminant(const SMatrix<T> &src) {
   if (src.size == 1) {

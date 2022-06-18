@@ -2,7 +2,10 @@
 // Created by ay871 on 2022/6/6.
 //
 #include <opencv2/opencv.hpp>
+#include "Matrix.h"
 #include "IndexOutOfBound.h"
+
+using namespace std;
 
 int main(){
     Matrix<std::complex<double>> a(4, 4);
