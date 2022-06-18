@@ -18,53 +18,57 @@
 #include "DivisorBeZero.h"
 #include "NotVector.h"
 #include "ColRowNotMatch.h"
-template <class T> class Matrix {
-  
+
+template<class T>
+class Matrix {
+
 private:
     T *data;
     size_t size;
     size_t m_col, m_row;
+
     bool isValid(size_t col, size_t row) const;
+
     bool isValid(size_t col_begin, size_t col_end, size_t row_begin, size_t row_end) const;
-  
- public:
-  Matrix() : data(nullptr), size(0), m_col(0), m_row(0) {}
 
-  Matrix(size_t col, size_t row);
+public:
+    Matrix() : data(nullptr), size(0), m_col(0), m_row(0) {}
 
-  explicit Matrix(const cv::Mat &mat); // 构造函数，将cv::Mat转换为Matrix
+    Matrix(size_t col, size_t row);
 
-  Matrix(const Matrix<T> &a); // copy constructor
+    explicit Matrix(const cv::Mat &mat); // 构造函数，将cv::Mat转换为Matrix
 
-  Matrix(Matrix<T> &&a) noexcept; // move constructor
+    Matrix(const Matrix<T> &a); // copy constructor
 
-  Matrix<T> &operator=(Matrix<T> const &a); // copy assignment
+    Matrix(Matrix<T> &&a) noexcept; // move constructor
 
-  Matrix<T> &operator=(Matrix<T> &&a) noexcept; // move assignment
+    Matrix<T> &operator=(Matrix<T> const &a); // copy assignment
 
-  Matrix<T> operator+(Matrix<T> const &mat) const;
+    Matrix<T> &operator=(Matrix<T> &&a) noexcept; // move assignment
 
-  Matrix operator-(Matrix const &mat) const;
+    Matrix<T> operator+(Matrix<T> const &mat) const;
 
-  static Matrix scalarMultiplication(double const &k, Matrix const &mat);
+    Matrix operator-(Matrix const &mat) const;
 
-  static Matrix scalarDivision(double const &k, Matrix const &mat);
+    static Matrix scalarMultiplication(double const &k, Matrix const &mat);
 
-  static Matrix transposition(Matrix const &mat);
+    static Matrix scalarDivision(double const &k, Matrix const &mat);
 
-  static Matrix elementMultiplication(Matrix const &mat_a, Matrix const &mat_b);
+    static Matrix transposition(Matrix const &mat);
 
-  static Matrix matrixMultiplication(Matrix const &mat_a, Matrix const &mat_b);
+    static Matrix elementMultiplication(Matrix const &mat_a, Matrix const &mat_b);
 
-  static Matrix vectorMultiplication(Matrix const &mat_a, Matrix const &vec);
+    static Matrix matrixMultiplication(Matrix const &mat_a, Matrix const &mat_b);
 
-  static Matrix dotProduct(Matrix const &mat_a, Matrix const &mat_b);
+    static Matrix vectorMultiplication(Matrix const &mat_a, Matrix const &vec);
 
-  static Matrix crossProduct(Matrix const &mat_a, Matrix const &mat_b);
+    static Matrix dotProduct(Matrix const &mat_a, Matrix const &mat_b);
 
-  cv::Mat toCvMat() const;
+    static Matrix crossProduct(Matrix const &mat_a, Matrix const &mat_b);
 
-  T get(size_t col, size_t row) const;
+    cv::Mat toCvMat() const;
+
+    T get(size_t col, size_t row) const;
 
     T *getData() const;
 
@@ -216,7 +220,7 @@ Matrix<T> &Matrix<T>::operator=(Matrix<T> &&a) noexcept {
 
 template<class T>
 Matrix<T> Matrix<T>::operator+(const Matrix<T> &mat) const {
-    if (mat.m_col != this->m_col || mat.m_row != this->m_row){
+    if (mat.m_col != this->m_col || mat.m_row != this->m_row) {
         throw ColRowNotMatch(mat.m_row, mat.m_col, this->m_row, this->m_col);
     }
     T *a = this->data;
@@ -233,15 +237,15 @@ Matrix<T> Matrix<T>::operator+(const Matrix<T> &mat) const {
 }
 
 template<class T>
-Matrix<T> Matrix<T>::operator-(Matrix<T> const &mat) const{
-    if (mat.m_col != this->m_col || mat.m_row != this->m_row){
+Matrix<T> Matrix<T>::operator-(Matrix<T> const &mat) const {
+    if (mat.m_col != this->m_col || mat.m_row != this->m_row) {
         throw ColRowNotMatch(mat.m_row, mat.m_col, this->m_row, this->m_col);
     }
-    T* a = this->data;
-    T* b = mat.data;
+    T *a = this->data;
+    T *b = mat.data;
     Matrix<T> res(this->m_col, this->m_row);
-    T* ans = res.data;
-    for(int i = 0; i < this->size; i++){
+    T *ans = res.data;
+    for (int i = 0; i < this->size; i++) {
         *ans = *a - *b;
         ans++;
         a++;
@@ -462,11 +466,11 @@ Matrix<T> Matrix<T>::flip(const Matrix<T> &kernel) {
 }
 
 template<class T>
-Matrix<T> Matrix<T>::scalarMultiplication(double const &k, Matrix<T> const &mat){
-    T* a = mat.data;
+Matrix<T> Matrix<T>::scalarMultiplication(double const &k, Matrix<T> const &mat) {
+    T *a = mat.data;
     Matrix<T> res(mat.m_col, mat.m_row);
-    T* ans = res.data;
-    for(int i = 0; i < mat.size; i++){
+    T *ans = res.data;
+    for (int i = 0; i < mat.size; i++) {
         *ans = *a * k;
         ans++;
         a++;
@@ -475,14 +479,14 @@ Matrix<T> Matrix<T>::scalarMultiplication(double const &k, Matrix<T> const &mat)
 }
 
 template<class T>
-Matrix<T> Matrix<T>::scalarDivision(double const &k, Matrix<T> const &mat){
-    if (k == 0){
+Matrix<T> Matrix<T>::scalarDivision(double const &k, Matrix<T> const &mat) {
+    if (k == 0) {
         throw DivisorBeZero();
     }
-    T* a = mat.data;
+    T *a = mat.data;
     Matrix<T> res(mat.m_col, mat.m_row);
-    T* ans = res.data;
-    for(int i = 0; i < mat.size; i++){
+    T *ans = res.data;
+    for (int i = 0; i < mat.size; i++) {
         *ans = *a / k;
         ans++;
         a++;
@@ -491,13 +495,13 @@ Matrix<T> Matrix<T>::scalarDivision(double const &k, Matrix<T> const &mat){
 }
 
 template<class T>
-Matrix<T> Matrix<T>::transposition(Matrix<T> const &mat){
-    T* a;
+Matrix<T> Matrix<T>::transposition(Matrix<T> const &mat) {
+    T *a;
     Matrix<T> res(mat.m_row, mat.m_col);
-    T* ans = res.data;
+    T *ans = res.data;
     for (int i = 0; i < mat.m_col; ++i) {
         a = mat.data + i;
-        for(int j = 0; j < mat.m_row; j++){
+        for (int j = 0; j < mat.m_row; j++) {
             *ans = *a;
             ans++;
             a += mat.m_col;
@@ -514,9 +518,9 @@ template<class T>
 Matrix<T> conjugation(Matrix<T> const &mat) {
     T *a;
     Matrix<T> res(mat.getRow(), mat.getCol());
-    T *ans = res.data;
+    T *ans = res.getData();
     for (int i = 0; i < mat.getCol(); ++i) {
-        a = mat.data + i;
+        a = mat.getData() + i;
         for (int j = 0; j < mat.getRow(); j++) {
             *ans = *a;
             ans++;
@@ -527,35 +531,36 @@ Matrix<T> conjugation(Matrix<T> const &mat) {
 }
 
 template<class T>
-Matrix<std::complex<T>> conjugation(Matrix<std::complex<T>> const &mat){
+Matrix<std::complex<T>> conjugation(Matrix<std::complex<T>> const &mat) {
     std::complex<T> *a;
     Matrix<std::complex<T>> res(mat.getRow(), mat.getCol());
-    std::complex<T> *ans = res.data;
+    std::complex<T> *ans = res.getData();
     for (int i = 0; i < mat.getCol(); ++i) {
-        a = mat.data + i;
+        a = mat.getData() + i;
         for (int j = 0; j < mat.getRow(); j++) {
             *ans = *a;
             ans++;
             a += mat.getCol();
         }
     }
-    std::complex<T> *ans1 = res.data;
-    for (int k = 0; k < res.size; ++k) {
+    std::complex<T> *ans1 = res.getData();
+    for (int k = 0; k < res.getCol() * res.getRow(); ++k) {
         *ans1 = conj(*ans1);
         ans1++;
     }
     return res;
 }
+
 template<class T>
-Matrix<T> Matrix<T>::elementMultiplication(Matrix<T> const &mat_a, Matrix<T> const &mat_b){
-    if (mat_a.m_col != mat_b.m_col || mat_a.m_row != mat_b.m_row){
+Matrix<T> Matrix<T>::elementMultiplication(Matrix<T> const &mat_a, Matrix<T> const &mat_b) {
+    if (mat_a.m_col != mat_b.m_col || mat_a.m_row != mat_b.m_row) {
         throw ColRowNotMatch(mat_a.m_row, mat_a.m_col, mat_b.m_row, mat_b.m_col);
     }
-    T* a = mat_a.data;
-    T* b = mat_b.data;
+    T *a = mat_a.data;
+    T *b = mat_b.data;
     Matrix<T> res(mat_a.m_col, mat_a.m_row);
-    T* ans = res.data;
-    for(int i = 0; i < mat_a.size; i++){
+    T *ans = res.data;
+    for (int i = 0; i < mat_a.size; i++) {
         *ans = *a * *b;
         ans++;
         a++;
@@ -565,15 +570,15 @@ Matrix<T> Matrix<T>::elementMultiplication(Matrix<T> const &mat_a, Matrix<T> con
 }
 
 template<class T>
-Matrix<T> Matrix<T>::matrixMultiplication(Matrix<T> const &mat_a, Matrix<T> const &mat_b){
-    if (mat_a.m_col != mat_b.m_row){
-        throw ColRowNotMatch(mat_a.m_col,mat_b.m_row);
+Matrix<T> Matrix<T>::matrixMultiplication(Matrix<T> const &mat_a, Matrix<T> const &mat_b) {
+    if (mat_a.m_col != mat_b.m_row) {
+        throw ColRowNotMatch(mat_a.m_col, mat_b.m_row);
     }
-    T* a = mat_a.data;
-    T* b = mat_b.data;
+    T *a = mat_a.data;
+    T *b = mat_b.data;
     Matrix<T> res(mat_b.m_col, mat_a.m_row);
-    T* ans = res.data;
-    for(int i = 0; i < res.m_row; i++){
+    T *ans = res.data;
+    for (int i = 0; i < res.m_row; i++) {
         for (int j = 0; j < res.m_col; ++j) {
             for (int k = 0; k < mat_a.m_col; ++k) {
                 *ans += *(a + k + (i * mat_a.m_col)) * *(b + j + (k * mat_b.m_col));
@@ -585,18 +590,18 @@ Matrix<T> Matrix<T>::matrixMultiplication(Matrix<T> const &mat_a, Matrix<T> cons
 }
 
 template<class T>
-Matrix<T> Matrix<T>::vectorMultiplication(Matrix<T> const &mat_a, Matrix<T> const &vec){
-    if (vec.m_col != 1){
+Matrix<T> Matrix<T>::vectorMultiplication(Matrix<T> const &mat_a, Matrix<T> const &vec) {
+    if (vec.m_col != 1) {
         throw NotVector(vec.m_col);
     }
-    if (mat_a.m_col != vec.m_row){
-        throw ColRowNotMatch(mat_a.size,vec.size);
+    if (mat_a.m_col != vec.m_row) {
+        throw ColRowNotMatch(mat_a.size, vec.size);
     }
-    T* a = mat_a.data;
-    T* b = vec.data;
+    T *a = mat_a.data;
+    T *b = vec.data;
     Matrix<T> res(vec.m_col, mat_a.m_row);
-    T* ans = res.data;
-    for(int i = 0; i < res.m_row; i++){
+    T *ans = res.data;
+    for (int i = 0; i < res.m_row; i++) {
         for (int j = 0; j < res.m_col; ++j) {
             for (int k = 0; k < mat_a.m_col; ++k) {
                 *ans += *(a + k + (i * mat_a.m_col)) * *(b + j + (k * vec.m_col));
@@ -608,15 +613,15 @@ Matrix<T> Matrix<T>::vectorMultiplication(Matrix<T> const &mat_a, Matrix<T> cons
 }
 
 template<class T>
-Matrix<T> Matrix<T>::dotProduct(Matrix<T> const &mat_a, Matrix<T> const &mat_b){
-    if (mat_a.m_col != mat_b.m_col || mat_a.m_row != mat_b.m_row){
-        throw ColRowNotMatch(mat_a.m_col,mat_b.m_row);
+Matrix<T> Matrix<T>::dotProduct(Matrix<T> const &mat_a, Matrix<T> const &mat_b) {
+    if (mat_a.m_col != mat_b.m_col || mat_a.m_row != mat_b.m_row) {
+        throw ColRowNotMatch(mat_a.m_col, mat_b.m_row);
     }
-    T* a = mat_a.data;
-    T* b = mat_b.data;
+    T *a = mat_a.data;
+    T *b = mat_b.data;
     Matrix<T> res(mat_a.m_col, mat_a.m_row);
-    T* ans = res.data;
-    for(int i = 0; i < mat_a.size; i++){
+    T *ans = res.data;
+    for (int i = 0; i < mat_a.size; i++) {
         *ans = *a * *b;
         ans++;
         a++;
@@ -626,15 +631,15 @@ Matrix<T> Matrix<T>::dotProduct(Matrix<T> const &mat_a, Matrix<T> const &mat_b){
 }
 
 template<class T>
-Matrix<T> Matrix<T>::crossProduct(Matrix<T> const &mat_a, Matrix<T> const &mat_b){
-    if (mat_a.m_col != mat_b.m_row){
-        throw ColRowNotMatch(mat_a.m_col,mat_b.m_row);
+Matrix<T> Matrix<T>::crossProduct(Matrix<T> const &mat_a, Matrix<T> const &mat_b) {
+    if (mat_a.m_col != mat_b.m_row) {
+        throw ColRowNotMatch(mat_a.m_col, mat_b.m_row);
     }
-    T* a = mat_a.data;
-    T* b = mat_b.data;
+    T *a = mat_a.data;
+    T *b = mat_b.data;
     Matrix<T> res(mat_b.m_col, mat_a.m_row);
-    T* ans = res.data;
-    for(int i = 0; i < res.m_row; i++){
+    T *ans = res.data;
+    for (int i = 0; i < res.m_row; i++) {
         for (int j = 0; j < res.m_col; ++j) {
             for (int k = 0; k < mat_a.m_col; ++k) {
                 *ans += *(a + k + (i * mat_a.m_col)) * *(b + j + (k * mat_b.m_col));
