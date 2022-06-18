@@ -35,11 +35,23 @@
 
 ### Basic arithmetic
 
-​	The basic arithmetic is realized by the 
+​	For all arithmetic, we implement them by using pointer to directly `operate the memory` and using template to support different types of value. Meanwhile, these functions will throw exceptions if input or output value is invalid.
 
+- Addition and Subtraction
 
+  They will throw exception if the two matrix's `column` or `row` is not `equal`. After checking the exception, it will return result matrix.
 
+- Multiplication and product
 
+  There are four different `multiplications` and two `products`. For `matrix-matrix multiplication`, `matrix-vector multiplication` and  `cross product`, they will throw a exception if the column of matrix A is not equal to the row of matrix B. For `element-wise multiplication` and `dot product`, they will throw a exception if the two matrix's column or row is not equal. After checking the exception, they return a result matrix. For `scalar multiplication`, it will return a matrix with all elements multiplicated.
+
+- Transposition and conjugation
+
+  For `conjugation`, we use `specialization` to distinguish complex and other types. In a complex matrix, it will return a transposed matrix with every element conjugated. For `transposition`, we implement it by one more a 
+
+- Scalar division
+
+  In this function, if you divide the matrix by 0, it will throw a exception. After checking it, it will return a matrix after division based in your type.
 
 ### Eigenvalues and Eigenvectors
 
