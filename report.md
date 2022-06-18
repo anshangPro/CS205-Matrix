@@ -8,16 +8,6 @@
 
 ### Overall introduction:
 
-```c++
-Matrix<T> eigenValue();
-
-    Matrix<T> eigenValue(int times);
-
-    Matrix<T> eigenVector();
-
-    Matrix<T> eigenVector(int times);
-```
-
 ​	Our code realize the `Matrix` class using `template` definition. So we can change the type we passing to the `class` and construct the needed type of matrix. We can using the `Matrix<T>` to realize the function of the numeric types. 
 
 ​	The storage of our data of the matrix using a pointer to point to the start address of the data and we provide the get and set function for the user to get the needed data in the `(row,col)`. Hence, we add some functions and exceptions for users to test the data validation.
@@ -65,7 +55,7 @@ Matrix<T> eigenValue();
 
 ### Arithmetic reduction operations
 
-For all four operation, we support two kind of function overloading. If we only get one paramater, we will do operation on the whole matrix. Otherwise, we will do on the submatrix.
+For all four operation, we support two kind of function overloading. 
 
 ```c++
 template<class T>
@@ -74,6 +64,8 @@ T getXXX(Matrix<T> mat);
 template<class T>
 T getXXX(Matrix<T> mat, size_t col_begin, size_t col_end, size_t row_begin, size_t row_end);
 ```
+
+If we only get one paramater, we will do operation on the whole matrix. Otherwise, we will do on the submatrix.
 
 ### Eigenvalues and Eigenvectors
 
